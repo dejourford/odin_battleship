@@ -9,6 +9,6 @@ ship1.hit();
 ship1.hit();
 newBoard.receiveAttack(1, 3)
 
-console.log('ships:', newBoard.ships)
-console.log(`${ship1}`, ship1.hits)
-console.log(ship1.isSunk());
+console.log(newBoard.allShipsSunk());
+
+

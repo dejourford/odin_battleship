@@ -31,4 +31,8 @@ export class Gameboard {
     }
     
     // 4. NEEDS TO RETURN TRUE OR FALSE IF ALL SHIPS ARE SUNK
+    allShipsSunk() {
+        
+       return this.ships.every(entry => entry.ship.isSunk());
+    }
 }
