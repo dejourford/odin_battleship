@@ -2,9 +2,13 @@
 
 // 1.WHAT IS THE SHIP RESPONSIBLE FOR?
 // - LENGTH , - HITS , -isSunk
-export class Ship{
-    
+export class Ship {
+
     constructor(length) {
+        if (length <= 0) {
+            throw new Error("Invalid ship length!")
+        }
+
         this.length = length;
         this.hits = 0;
     }
