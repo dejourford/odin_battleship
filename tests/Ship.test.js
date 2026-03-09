@@ -13,7 +13,7 @@ test("ship gets hit", () => {
     expect(ship.hits).toBe(1);
 })
 
-// test if ship is sunken 
+// test if ship is sunken : should return true
 test("ship sinks after enough hits", () => {
     const ship = new Ship(3);
     ship.hit()
@@ -21,4 +21,14 @@ test("ship sinks after enough hits", () => {
     ship.hit()
 
     expect(ship.isSunk()).toBe(true);
+})
+
+// test if ship is sunken : sould return false
+test("ship sinks after enough hits", () => {
+    const ship = new Ship(4);
+    ship.hit()
+    ship.hit()
+    ship.hit()
+
+    expect(ship.isSunk()).toBe(false);
 })
