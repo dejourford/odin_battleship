@@ -12,8 +12,9 @@ export class Gameboard {
         })
     }
     // 2. NEEDS TO RECEIVE ATTACKS
-    receiveAttack() {
-        console.log("attack received")
+    receiveAttack(x, y) {
+        const xCoordinate = x;
+        const yCoordinate = y;
     }
     
     // 4. NEEDS TO RETURN TRUE OR FALSE IF ALL SHIPS ARE SUNK
