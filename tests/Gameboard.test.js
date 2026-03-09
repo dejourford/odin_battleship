@@ -33,6 +33,16 @@ test("gameboard tracks misses", () => {
     expect(newBoard.missedAttacks).toEqual([[1, 6]])
 })
 
+// test gameboard to track multiple misses
+test("gameboard tracks misses", () => {
+    const newBoard = new Gameboard();
+
+    newBoard.receiveAttack(1, 6)
+    newBoard.receiveAttack(2, 3)
+    newBoard.receiveAttack(3, 1)
+    expect(newBoard.missedAttacks).toEqual([[1, 6], [2, 3], [3, 1]])
+})
+
 // test gameboard checks if all ships are sunk
 test("gameboard returns false if not all ships are hit", () => {
     const newBoard = new Gameboard();
