@@ -1,7 +1,4 @@
 // create class for ships
-
-// 1.WHAT IS THE SHIP RESPONSIBLE FOR?
-// - LENGTH , - HITS , -isSunk
 export class Ship {
 
     constructor(length) {
