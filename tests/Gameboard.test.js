@@ -1,11 +1,14 @@
 import { Gameboard } from "../src/Gameboard";
+import { Ship } from "../src/Ship";
 
 test("gameboard stores ships", () => {
     const newBoard = new Gameboard();
-    newBoard.placeShip(3, [1, 3]);
+    const ship = new Ship(3);
+    
+    newBoard.placeShip(ship, [1, 3]);
     expect(newBoard.ships).toEqual([
         {
-            ship: 3,
+            ship: ship,
             coordinates: [1,3]
         }
     ])
