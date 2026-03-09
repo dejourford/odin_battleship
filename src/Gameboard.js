@@ -17,7 +17,10 @@ export class Gameboard {
         // loop ships array 
         for (const entry of this.ships) {
             for (const coord of entry.coordinates) {
-                if (coord[0] === x && coord[1] === y) {
+                
+                const [cx, cy] = coord;
+                
+                if (cx === x && cy === y) {
                     entry.ship.hit();
                     return "hit"
                 }
