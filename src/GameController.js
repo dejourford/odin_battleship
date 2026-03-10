@@ -9,9 +9,17 @@ export class GameController {
     }
 
     // 1. check for win condition
-    checkWinner(board) {
-        // loop through each ship's isSunk()
-        return board.ships.every(entry => entry.ship.isSunk());
+    checkWinner() {
+        if (this.user.board.allShipsSunk()) {
+            return "cpu";
+        }
+
+
+        if (this.cpu.board.allShipsSunk()) {
+            return "user";
+        }
+
+        return null;
     }
 
 
