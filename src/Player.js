@@ -13,4 +13,9 @@ export class Player {
         this.type = type;
         this.board = new Gameboard();
     }
+
+    attack(enemyBoard, x, y) {
+        
+        enemyBoard.receiveAttack(x, y)
+    } 
 }
