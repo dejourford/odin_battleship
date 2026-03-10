@@ -1,4 +1,4 @@
-import { Gameboard } from "./Gameboard";
+import { Gameboard } from "./Gameboard.js";
 
 
 // player class with two types of players (real and cpu)
@@ -6,7 +6,8 @@ import { Gameboard } from "./Gameboard";
 export class Player {
     constructor(type) {
      
-        if (type !== "cpu" && type !== "user") {
+        const validTypes = ["cpu", "user"]
+        if (!validTypes.includes(type)) {
             throw new Error("Player type must be 'user' or 'cpu'")
         }
         
