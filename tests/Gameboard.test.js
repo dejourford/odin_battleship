@@ -29,6 +29,19 @@ test("gameboard throws an error instead of storing duplicate ships", () => {
     }).toThrow("This ship already exists!")
 })
 
+// test gameboard throws an error instead of placing overlapping ships
+test("gameboard throws an error instead of placing overlapping ships", () => {
+    const newBoard = new Gameboard();
+    const ship = new Ship(3);
+    const ship2 = new Ship(4);
+
+    newBoard.placeShip(ship, [[1,3], [1,4], [1,5]]);
+
+    expect(() => {
+        newBoard.placeShip(ship2, [[1,3], [1,4], [1,5], [1,6]]);
+    }).toThrow("A ship already exists here!");
+});
+
 // test gameboard receives attacks
 test("gameboard receives attacks", () => {
     const newBoard = new Gameboard();

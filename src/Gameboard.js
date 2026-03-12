@@ -1,5 +1,6 @@
 export class Gameboard {
     constructor() {
+        this.size = 10;
         this.ships = [];
         this.missedAttacks = [];
         this.attacks = [];
@@ -7,27 +8,29 @@ export class Gameboard {
 
     // 1. NEEDS TO PLACE SHIP
     placeShip(ship, coordinates) {
-        // if ships array already has a ship with ship.length, throw error
-        console.log(this.ships)
-        if (this.ships.length !== 0) {
-            for (const item of this.ships) {
-            if (item.ship.length === ship.length) {
-                throw new Error("This ship already exists!")
-            }
+
+    // check for overlapping ships
+    for (const coord of coordinates) {
+        const [x, y] = coord;
+
+        const overlap = this.ships.some(existingShip =>
+            existingShip.coordinates.some(([sx, sy]) => sx === x && sy === y)
+        );
+
+        if (overlap) {
+            throw new Error("A ship already exists here!");
         }
-        }
-        
-        
-        
-        this.ships.push({
-            ship, 
-            coordinates
-        })
     }
+
+    this.ships.push({
+        ship,
+        coordinates
+    });
+}
     // 2. NEEDS TO RECEIVE ATTACKS
     receiveAttack(x, y) {
         // check if [x,y] is in board.attacks. if so throw error
-        
+
         if (this.attacks.some(([ax, ay]) => ax === x && ay === y)) {
             throw new Error("This attack has already been made!")
         }
@@ -35,11 +38,11 @@ export class Gameboard {
 
         // loop ships array 
         for (const entry of this.ships) {
-            
+
             for (const coord of entry.coordinates) {
-                
+
                 const [cx, cy] = coord;
-                
+
                 if (cx === x && cy === y) {
                     entry.ship.hit();
                     this.attacks.push([x, y])
@@ -47,13 +50,13 @@ export class Gameboard {
                 }
             }
         }
-       
+
         // track misses
         this.missedAttacks.push([x, y]);
         return "miss"
-        
+
     }
-    
+
     // 4. NEEDS TO RETURN TRUE OR FALSE IF ALL SHIPS ARE SUNK
     allShipsSunk() {
         if (this.ships.length > 0) {
