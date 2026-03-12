@@ -14,9 +14,16 @@ export class Gameboard {
     }
     // 2. NEEDS TO RECEIVE ATTACKS
     receiveAttack(x, y) {
+        // check if [x,y] is in board.attacks. if so throw error
         
+        if (this.attacks.some(([ax, ay]) => ax === x && ay === y)) {
+            throw new Error("This attack has already been made!")
+        }
+
+
         // loop ships array 
         for (const entry of this.ships) {
+            
             for (const coord of entry.coordinates) {
                 
                 const [cx, cy] = coord;

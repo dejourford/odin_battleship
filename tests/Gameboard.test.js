@@ -123,13 +123,11 @@ test("gameboard checks for and returns winner", () => {
     const ship = new Ship(4);
     const ship2 = new Ship(2);
     game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
-    game.cpu.board.placeShip(ship2, [[2,2], [3,3]])
     game.user.attack(game.cpu.board, 1, 2)
-    game.user.attack(game.cpu.board, 2, 3)
-    game.user.attack(game.cpu.board, 1, 4)
-    game.user.attack(game.cpu.board, 1, 5)
-    game.user.attack(game.cpu.board, 2, 2)
-    game.user.attack(game.cpu.board, 3, 3)
+    
 
-    expect(game.cpu.board.attacks).toEqual([[1, 2],[2, 3],[1, 4],[1, 5],[2, 2],[3, 3]])
-}) 
+    expect(() => {
+        game.user.attack(game.cpu.board, 1, 2)
+        game.cpu.board.receiveAttack()
+    }).toThrow("This attack has already been made!")
+})
