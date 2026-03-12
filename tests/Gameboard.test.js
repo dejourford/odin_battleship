@@ -1,4 +1,5 @@
 import { Gameboard } from "../src/Gameboard";
+import { GameController } from "../src/GameController";
 import { Ship } from "../src/Ship";
 
 // test gameboard stores ships
@@ -64,3 +65,54 @@ test("gameboard returns true if all ships are hit", () => {
     newBoard.receiveAttack(1, 2)
     expect(newBoard.allShipsSunk()).toEqual(true)
 })
+
+// test gameboard checks for user as winner
+test("gameboard checks for and returns winner", () => {
+    const game = new GameController();
+    const ship = new Ship(4);
+    const ship2 = new Ship(2);
+    game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
+    game.cpu.board.placeShip(ship2, [[2,2], [3,3]])
+    game.user.attack(game.cpu.board, 1, 2)
+    game.user.attack(game.cpu.board, 2, 3)
+    game.user.attack(game.cpu.board, 1, 4)
+    game.user.attack(game.cpu.board, 1, 5)
+    game.user.attack(game.cpu.board, 2, 2)
+    game.user.attack(game.cpu.board, 3, 3)
+
+    expect(game.checkWinner()).toBe("user")
+}) 
+
+// test gameboard checks for cpu as winner
+test("gameboard checks for and returns winner", () => {
+    const game = new GameController();
+    const ship = new Ship(4);
+    const ship2 = new Ship(2);
+    game.user.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
+    game.user.board.placeShip(ship2, [[2,2], [3,3]])
+    game.cpu.attack(game.user.board, 1, 2)
+    game.cpu.attack(game.user.board, 2, 3)
+    game.cpu.attack(game.user.board, 1, 4)
+    game.cpu.attack(game.user.board, 1, 5)
+    game.cpu.attack(game.user.board, 2, 2)
+    game.cpu.attack(game.user.board, 3, 3)
+
+    expect(game.checkWinner()).toBe("cpu")
+})
+
+// test gameboard checks winner
+test("gameboard checks for and returns winner", () => {
+    const game = new GameController();
+    const ship = new Ship(4);
+    const ship2 = new Ship(2);
+    game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
+    game.cpu.board.placeShip(ship2, [[2,2], [3,3]])
+    game.user.attack(game.cpu.board, 1, 2)
+    game.user.attack(game.cpu.board, 2, 3)
+    game.user.attack(game.cpu.board, 1, 4)
+    game.user.attack(game.cpu.board, 1, 5)
+    game.user.attack(game.cpu.board, 2, 2)
+    game.user.attack(game.cpu.board, 3, 3)
+
+    expect(game.checkWinner()).toBe("user")
+}) 
