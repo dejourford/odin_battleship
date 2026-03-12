@@ -7,6 +7,18 @@ export class Gameboard {
 
     // 1. NEEDS TO PLACE SHIP
     placeShip(ship, coordinates) {
+        // if ships array already has a ship with ship.length, throw error
+        console.log(this.ships)
+        if (this.ships.length !== 0) {
+            for (const item of this.ships) {
+            if (item.ship.length === ship.length) {
+                throw new Error("This ship already exists!")
+            }
+        }
+        }
+        
+        
+        
         this.ships.push({
             ship, 
             coordinates

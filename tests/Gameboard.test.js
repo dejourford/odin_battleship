@@ -16,6 +16,19 @@ test("gameboard stores ships", () => {
     ])
 })
 
+// test gameboard throws an error instead of storing duplicate ships
+test("gameboard throws an error instead of storing duplicate ships", () => {
+    const newBoard = new Gameboard();
+    const ship = new Ship(3);
+
+    newBoard.placeShip(ship, [[1, 3], [1, 4], [4, 5]]);
+    
+
+    expect(() => {
+        newBoard.placeShip(ship, [[1, 3], [1, 4], [4, 5]])
+    }).toThrow("This ship already exists!")
+})
+
 // test gameboard receives attacks
 test("gameboard receives attacks", () => {
     const newBoard = new Gameboard();
