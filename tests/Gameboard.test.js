@@ -100,7 +100,7 @@ test("gameboard checks for and returns winner", () => {
     expect(game.checkWinner()).toBe("cpu")
 })
 
-// test gameboard checks winner
+// test gameboard checks for user as winner
 test("gameboard checks for and returns winner", () => {
     const game = new GameController();
     const ship = new Ship(4);
@@ -115,4 +115,21 @@ test("gameboard checks for and returns winner", () => {
     game.user.attack(game.cpu.board, 3, 3)
 
     expect(game.checkWinner()).toBe("user")
+}) 
+
+// test gameboard tracks attacks successful enemy attacks
+test("gameboard checks for and returns winner", () => {
+    const game = new GameController();
+    const ship = new Ship(4);
+    const ship2 = new Ship(2);
+    game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
+    game.cpu.board.placeShip(ship2, [[2,2], [3,3]])
+    game.user.attack(game.cpu.board, 1, 2)
+    game.user.attack(game.cpu.board, 2, 3)
+    game.user.attack(game.cpu.board, 1, 4)
+    game.user.attack(game.cpu.board, 1, 5)
+    game.user.attack(game.cpu.board, 2, 2)
+    game.user.attack(game.cpu.board, 3, 3)
+
+    expect(game.cpu.board.attacks).toEqual([[1, 2],[2, 3],[1, 4],[1, 5],[2, 2],[3, 3]])
 }) 

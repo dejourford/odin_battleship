@@ -2,6 +2,7 @@ export class Gameboard {
     constructor() {
         this.ships = [];
         this.missedAttacks = [];
+        this.attacks = [];
     }
 
     // 1. NEEDS TO PLACE SHIP
@@ -22,6 +23,7 @@ export class Gameboard {
                 
                 if (cx === x && cy === y) {
                     entry.ship.hit();
+                    this.attacks.push([x, y])
                     return "hit"
                 }
             }
