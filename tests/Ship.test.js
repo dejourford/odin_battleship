@@ -6,6 +6,14 @@ test("ship stores its length", () => {
     expect(ship.length).toBe(3);
 })
 
+// test ships outside of length range can't be created
+test("ships outside of length range can't be created", () => {
+    expect(() => new Ship(6)).toThrow("Invalid ship length!")
+    expect(() => new Ship(8)).toThrow("Invalid ship length!")
+    expect(() => new Ship(0)).toThrow("Invalid ship length!")
+     expect(() => new Ship(1)).toThrow("Invalid ship length!")
+})
+
 // test ship hits
 test("ship gets hit", () => {
     const ship = new Ship(3);

@@ -2,7 +2,7 @@
 export class Ship {
 
     constructor(length) {
-        if (length <= 0) {
+        if (length <= 1 || length > 5) {
             throw new Error("Invalid ship length!")
         }
 
