@@ -121,7 +121,6 @@ test("gameboard checks for and returns winner", () => {
 test("gameboard checks for and returns winner", () => {
     const game = new GameController();
     const ship = new Ship(4);
-    const ship2 = new Ship(2);
     game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
     game.user.attack(game.cpu.board, 1, 2)
     
