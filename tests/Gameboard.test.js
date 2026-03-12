@@ -117,7 +117,7 @@ test("gameboard checks for and returns winner", () => {
     expect(game.checkWinner()).toBe("user")
 }) 
 
-// test gameboard tracks attacks successful enemy attacks
+// test gameboard throws an error when a previously successful attack is attempted
 test("gameboard checks for and returns winner", () => {
     const game = new GameController();
     const ship = new Ship(4);
