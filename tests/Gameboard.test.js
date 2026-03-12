@@ -117,8 +117,8 @@ test("gameboard checks for user as winner", () => {
     expect(game.checkWinner()).toBe("user")
 }) 
 
-// test gameboard throws an error when a previously successful attack is attempted
-test("gameboard throws an error when a previously successful attack is attempted", () => {
+// test gameboard throws an error when a previously successful attack is attempted by the user
+test("gameboard throws an error when a previously successful attack is attempted by the user", () => {
     const game = new GameController();
     const ship = new Ship(4);
     game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
@@ -128,5 +128,19 @@ test("gameboard throws an error when a previously successful attack is attempted
     expect(() => {
         game.user.attack(game.cpu.board, 1, 2)
         game.cpu.board.receiveAttack()
+    }).toThrow("This attack has already been made!")
+})
+
+// test gameboard throws an error when a previously successful attack is attempted by the cpu
+test("gameboard throws an error when a previously successful attack is attempted by the cpu", () => {
+    const game = new GameController();
+    const ship = new Ship(4);
+    game.user.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
+    game.cpu.attack(game.user.board, 1, 2)
+    
+
+    expect(() => {
+        game.cpu.attack(game.user.board, 1, 2)
+        game.user.board.receiveAttack()
     }).toThrow("This attack has already been made!")
 })
