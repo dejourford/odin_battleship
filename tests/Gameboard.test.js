@@ -84,7 +84,7 @@ test("gameboard checks for and returns winner", () => {
 }) 
 
 // test gameboard checks for cpu as winner
-test("gameboard checks for and returns winner", () => {
+test("test gameboard checks for cpu as winner", () => {
     const game = new GameController();
     const ship = new Ship(4);
     const ship2 = new Ship(2);
@@ -101,7 +101,7 @@ test("gameboard checks for and returns winner", () => {
 })
 
 // test gameboard checks for user as winner
-test("gameboard checks for and returns winner", () => {
+test("gameboard checks for user as winner", () => {
     const game = new GameController();
     const ship = new Ship(4);
     const ship2 = new Ship(2);
@@ -118,7 +118,7 @@ test("gameboard checks for and returns winner", () => {
 }) 
 
 // test gameboard throws an error when a previously successful attack is attempted
-test("gameboard checks for and returns winner", () => {
+test("gameboard throws an error when a previously successful attack is attempted", () => {
     const game = new GameController();
     const ship = new Ship(4);
     game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
