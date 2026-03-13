@@ -5,7 +5,6 @@ export class Ship {
         if (length <= 1 || length > 5) {
             throw new Error("Invalid ship length!")
         }
-
         this.length = length;
         this.hits = 0;
     }
