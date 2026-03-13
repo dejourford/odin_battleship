@@ -27,6 +27,12 @@ export class GameController {
         this.currentPlayer.board.placeShip(patrolBoat, [[8,0],[8,1]]);
     }
 
+    // 2. switch turns
+    
+    switchTurns() {
+        this.currentPlayer = this.currentPlayer.type === "user" ? "cpu" : "user";
+    }
+
     // 3. check for win condition
     checkWinner() {
         if (this.user.board.allShipsSunk()) {
