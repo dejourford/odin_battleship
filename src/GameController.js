@@ -1,5 +1,6 @@
 import { Player } from "./Player.js";
 import { Ship } from "./Ship.js";
+import { renderBoard } from "./UIController.js";
 
 export class GameController {
     constructor() {
@@ -12,25 +13,29 @@ export class GameController {
     
 
     // 1. setup chips
-    setupShips() {
+    setupShips(player) {
         const carrier = new Ship(5)
         const battleship = new Ship(4)
         const destroyer = new Ship(3)
         const submarine = new Ship(3)
         const patrolBoat = new Ship(2)
 
-        console.log(this.currentPlayer)
-        this.currentPlayer.board.placeShip(carrier, [[0,0],[0,1],[0,2],[0,3],[0,4]]);
-        this.currentPlayer.board.placeShip(battleship, [[2,0],[2,1],[2,2],[2,3]]);
-        this.currentPlayer.board.placeShip(destroyer, [[4,0],[4,1],[4,2]]);
-        this.currentPlayer.board.placeShip(submarine, [[6,0],[6,1],[6,2]]);
-        this.currentPlayer.board.placeShip(patrolBoat, [[8,0],[8,1]]);
+        console.log(player)
+        player.board.placeShip(carrier, [[0,0],[0,1],[0,2],[0,3],[0,4]]);
+        player.board.placeShip(battleship, [[2,0],[2,1],[2,2],[2,3]]);
+        player.board.placeShip(destroyer, [[4,0],[4,1],[4,2]]);
+        player.board.placeShip(submarine, [[6,0],[6,1],[6,2]]);
+        player.board.placeShip(patrolBoat, [[8,0],[8,1]]);
     }
 
     // 2. switch turns
     
     switchTurns() {
-        this.currentPlayer = this.currentPlayer.type === "user" ? "cpu" : "user";
+        // switch teams
+        this.currentPlayer = this.currentPlayer === this.user ? this.cpu : this.user;
+
+        // render current player board
+        renderBoard(this.currentPlayer.board);
     }
 
     // 3. check for win condition

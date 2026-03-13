@@ -8,7 +8,8 @@ const game = new GameController();
 renderBoard([]);
 
 
-game.setupShips();
+game.setupShips(game.user);
+game.setupShips(game.cpu);
 game.switchTurns();
+// game.user.board.placeShip("carrier", [1,2])
 console.log(game.currentPlayer)
-
