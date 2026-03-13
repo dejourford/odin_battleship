@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Page Title */
+h1 {
+    text-align: center;
+}
+
+/* board */
+.board {
+    border: 1px solid black;
+    width: fit-content; 
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    margin: 0 auto;
+}
+
+.cell {
+    height: 50px;
+    width: 50px;
+    border: 2px solid black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0, 0.3);
+}
