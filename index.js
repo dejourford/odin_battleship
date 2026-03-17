@@ -11,7 +11,7 @@ const renderForm = () => {
     const app = document.querySelector("#app");
     const board = document.querySelector(".board");
 
-    // 🔥 NEW: create overlay
+    // create overlay
     const overlay = document.createElement("div");
     overlay.classList.add("modal-overlay");
 
@@ -24,7 +24,7 @@ const renderForm = () => {
 
     // create player 1 group
     const playerOneGroup = document.createElement("div");
-    playerOneGroup.classList.add("player-group"); 
+    playerOneGroup.classList.add("player-group");
 
     const playerOnelabel = document.createElement("label");
     playerOnelabel.textContent = "Player Name";
@@ -34,7 +34,7 @@ const renderForm = () => {
 
     // create player 2 group
     const playerTwoGroup = document.createElement("div");
-    playerTwoGroup.classList.add("player-group"); 
+    playerTwoGroup.classList.add("player-group");
 
     const playerTwolabel = document.createElement("label");
     playerTwolabel.textContent = "Player Name (or enter 'cpu' to play the cpu)";
@@ -46,7 +46,7 @@ const renderForm = () => {
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
     submitButton.classList = "submit-button";
-    submitButton.textContent =  "Submit";
+    submitButton.textContent = "Submit";
 
     // form assembly
     playerOneGroup.append(playerOnelabel, playerOneInput);
@@ -66,6 +66,20 @@ const startButton = document.querySelector(".start-button");
 startButton.addEventListener("click", () => {
     renderForm();
 })
+
+// modal exit functionality
+document.addEventListener("click", (e) => {
+    const modal = document.querySelector(".modal");
+    const modalOverlay = document.querySelector(".modal-overlay");
+    const form = document.querySelector("form")
+
+    if (e.target.matches(".modal-overlay")) {
+        form.reset();
+        modalOverlay.remove();
+        console.log("moveeee")
+    }
+})
+
 
 
 // create game
