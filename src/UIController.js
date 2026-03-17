@@ -67,6 +67,15 @@ export function renderBoard(board) {
 
 // fxn to add player names to board
 export function renderNames(fp, sp) {
+    // remove prior names 
+const firstPlayerName = document.querySelector(".first-player-name");
+const secondPlayerName = document.querySelector(".second-player-name");
+    
+if (firstPlayerName && secondPlayerName) {
+    firstPlayerName.remove();
+    secondPlayerName.remove();
+}
+
     const app = document.querySelector("#app");
     const board = document.querySelector(".board")
     
@@ -74,10 +83,12 @@ export function renderNames(fp, sp) {
     const secondPlayer = sp;
 
     const firstPlayerText = document.createElement("p");
-    firstPlayerText.textContent = `${firstPlayer.charAt(0).toUpperCase() + firstPlayer.slice(1)}`
+    firstPlayerText.classList.add("first-player-name")
+    firstPlayerText.textContent = `${firstPlayer.toUpperCase()}`
 
     const secondPlayerText = document.createElement("p");
-    secondPlayerText.textContent = `${secondPlayer.charAt(0).toUpperCase() + secondPlayer.slice(1)}`
+    secondPlayerText.classList.add("second-player-name")
+    secondPlayerText.textContent = `${secondPlayer.toUpperCase()}`
 
     app.insertBefore(firstPlayerText, board)
     app.appendChild(secondPlayerText)
