@@ -2,12 +2,74 @@ import { Gameboard } from "./src/Gameboard.js";
 import { GameController } from "./src/GameController.js";
 import { renderBoard } from "./src/UIController.js";
 
-const game = new GameController();
 
-
+// call render board on page load
 renderBoard([]);
 
+// create function to render form
+const renderForm = () => {
+    const app = document.querySelector("#app");
+    const board = document.querySelector(".board");
 
+    // 🔥 NEW: create overlay
+    const overlay = document.createElement("div");
+    overlay.classList.add("modal-overlay");
+
+    // create modal
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+
+    // create form
+    const form = document.createElement("form");
+
+    // create player 1 group
+    const playerOneGroup = document.createElement("div");
+    playerOneGroup.classList.add("player-group"); 
+
+    const playerOnelabel = document.createElement("label");
+    playerOnelabel.textContent = "Player Name";
+
+    const playerOneInput = document.createElement("input");
+    playerOneInput.placeholder = "Player Name";
+
+    // create player 2 group
+    const playerTwoGroup = document.createElement("div");
+    playerTwoGroup.classList.add("player-group"); 
+
+    const playerTwolabel = document.createElement("label");
+    playerTwolabel.textContent = "Player Name (or enter 'cpu' to play the cpu)";
+
+    const playerTwoInput = document.createElement("input");
+    playerTwoInput.placeholder = "Player Name (or enter 'cpu' to play the cpu)";
+
+    // create submit button
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.classList = "submit-button";
+    submitButton.textContent =  "Submit";
+
+    // form assembly
+    playerOneGroup.append(playerOnelabel, playerOneInput);
+    playerTwoGroup.append(playerTwolabel, playerTwoInput);
+    form.append(playerOneGroup, playerTwoGroup, submitButton);
+
+    // assembly
+    modal.append(form);
+    overlay.append(modal);
+
+    // insert before board
+    app.insertBefore(overlay, board);
+};
+
+// render form to get player data when start button pressed
+const startButton = document.querySelector(".start-button");
+startButton.addEventListener("click", () => {
+    renderForm();
+})
+
+
+// create game
+const game = new GameController();
 game.setupShips(game.user);
 game.setupShips(game.cpu);
 game.switchTurns();

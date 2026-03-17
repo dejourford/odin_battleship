@@ -44,3 +44,35 @@ h1 {
     background: black;
     color: white;
 }
+
+/* modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 2em;
+  border-radius: 0.5em;
+  min-width: 20rem;
+}
+
+.player-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.submit-button {
+    margin: 0 auto;
+    display: flex;
+    padding: 0.3rem 1rem;
+    background: none;
+    border: 2px solid black;
+}
