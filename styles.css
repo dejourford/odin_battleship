@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+/* app */
+#app {
+    display: flex;
+    padding: 0rem 2rem;
+    font-size: 1.3rem;
+}
+
 /* Page Title */
 h1 {
     text-align: center;
