@@ -76,7 +76,6 @@ document.addEventListener("click", (e) => {
     if (e.target.matches(".modal-overlay")) {
         form.reset();
         modalOverlay.remove();
-        console.log("moveeee")
     }
 })
 
