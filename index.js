@@ -69,7 +69,6 @@ startButton.addEventListener("click", () => {
 
 // modal exit functionality
 document.addEventListener("click", (e) => {
-    const modal = document.querySelector(".modal");
     const modalOverlay = document.querySelector(".modal-overlay");
     const form = document.querySelector("form")
 
