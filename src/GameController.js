@@ -3,10 +3,10 @@ import { Ship } from "./Ship.js";
 import { renderBoard } from "./UIController.js";
 
 export class GameController {
-    constructor() {
-        this.user = new Player("user");
+    constructor(firstPlayer, secondPlayer) {
+        this.user = new Player(`"${firstPlayer}"`);
+        this.opp = new Player(`"${secondPlayer}"`);
         this.cpu = new Player("cpu");
-
         this.currentPlayer = this.user;
     }
 
@@ -32,7 +32,7 @@ export class GameController {
     
     switchTurns() {
         // switch teams
-        this.currentPlayer = this.currentPlayer === this.user ? this.cpu : this.user;
+        this.currentPlayer = this.currentPlayer === this.user ? this.opp : this.user;
 
         // render current player board
         renderBoard(this.currentPlayer.board);
@@ -45,7 +45,7 @@ export class GameController {
         }
 
 
-        if (this.cpu.board.allShipsSunk()) {
+        if (this.opp.board.allShipsSunk()) {
             return "user";
         }
 

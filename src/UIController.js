@@ -64,3 +64,21 @@ export function renderBoard(board) {
     // assembly
     app.append(boardElement);
 }
+
+// fxn to add player names to board
+export function renderNames(fp, sp) {
+    const app = document.querySelector("#app");
+    const board = document.querySelector(".board")
+    
+    const firstPlayer = fp
+    const secondPlayer = sp;
+
+    const firstPlayerText = document.createElement("p");
+    firstPlayerText.textContent = `${firstPlayer.charAt(0).toUpperCase() + firstPlayer.slice(1)}`
+
+    const secondPlayerText = document.createElement("p");
+    secondPlayerText.textContent = `${secondPlayer.charAt(0).toUpperCase() + secondPlayer.slice(1)}`
+
+    app.insertBefore(firstPlayerText, board)
+    app.appendChild(secondPlayerText)
+}

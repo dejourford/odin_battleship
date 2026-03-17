@@ -1,6 +1,6 @@
 import { Gameboard } from "./src/Gameboard.js";
 import { GameController } from "./src/GameController.js";
-import { renderBoard } from "./src/UIController.js";
+import { renderBoard, renderNames } from "./src/UIController.js";
 
 
 // call render board on page load
@@ -76,6 +76,11 @@ const renderForm = () => {
 
         form.reset();
         overlay.remove();
+
+        // create game
+        const game = new GameController(firstPlayer, secondPlayer);
+        console.log(game)
+        renderNames(firstPlayer, secondPlayer)
     })
 
 };
@@ -99,10 +104,3 @@ document.addEventListener("click", (e) => {
     }
 })
 
-// create game
-const game = new GameController();
-game.setupShips(game.user);
-game.setupShips(game.cpu);
-game.switchTurns();
-// game.user.board.placeShip("carrier", [1,2])
-console.log(game.currentPlayer)
