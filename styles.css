@@ -28,3 +28,19 @@ h1 {
     align-items: center;
     color: rgb(0, 0, 0, 0.3);
 }
+
+/* Start Button */
+.start-button {
+    padding: 1rem 2rem;
+    margin: 20px auto;
+    display: flex;
+    border-radius: 0.3rem;
+    background: none;
+    border: 3px solid black;
+    cursor: pointer;
+}
+
+.start-button:hover {
+    background: black;
+    color: white;
+}
