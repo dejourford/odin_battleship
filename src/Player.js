@@ -8,7 +8,7 @@ export class Player {
      
         
         
-        this.type = name === "cpu" ? "cpu" : "opp"
+        this.type = name === "cpu" ? "cpu" : "user"
         this.name = name;
         this.board = new Gameboard();
     }
