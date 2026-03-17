@@ -30,6 +30,7 @@ const renderForm = () => {
     playerOnelabel.textContent = "Player Name";
 
     const playerOneInput = document.createElement("input");
+    playerOneInput.name = "player-one"
     playerOneInput.placeholder = "Player Name";
 
     // create player 2 group
@@ -40,6 +41,7 @@ const renderForm = () => {
     playerTwolabel.textContent = "Player Name (or enter 'cpu' to play the cpu)";
 
     const playerTwoInput = document.createElement("input");
+    playerTwoInput.name = "player-two"
     playerTwoInput.placeholder = "Player Name (or enter 'cpu' to play the cpu)";
 
     // create submit button
@@ -59,6 +61,23 @@ const renderForm = () => {
 
     // insert before board
     app.insertBefore(overlay, board);
+
+    // form listener
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (playerOneInput.value === "" || playerTwoInput.value === "") return;
+        
+
+        const formData = new FormData(form)
+
+        const firstPlayer = formData.get("player-one").toLowerCase();
+        const secondPlayer = formData.get("player-two").toLowerCase();
+        console.log(firstPlayer, secondPlayer)
+
+        form.reset();
+        overlay.remove();
+    })
+
 };
 
 // render form to get player data when start button pressed
@@ -67,8 +86,10 @@ startButton.addEventListener("click", () => {
     renderForm();
 })
 
-// modal exit functionality
+// global click listeners for the document
 document.addEventListener("click", (e) => {
+
+    // modal listeners
     const modalOverlay = document.querySelector(".modal-overlay");
     const form = document.querySelector("form")
 
@@ -77,8 +98,6 @@ document.addEventListener("click", (e) => {
         modalOverlay.remove();
     }
 })
-
-
 
 // create game
 const game = new GameController();
