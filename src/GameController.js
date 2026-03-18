@@ -10,7 +10,7 @@ export class GameController {
         this.currentPlayer = this.user;
     }
 
-    
+
 
     // 1. setup chips
     setupShips(player) {
@@ -21,15 +21,15 @@ export class GameController {
         const patrolBoat = new Ship(2)
 
         console.log(player)
-        player.board.placeShip(carrier, [[0,0],[0,1],[0,2],[0,3],[0,4]]);
-        player.board.placeShip(battleship, [[2,0],[2,1],[2,2],[2,3]]);
-        player.board.placeShip(destroyer, [[4,0],[4,1],[4,2]]);
-        player.board.placeShip(submarine, [[6,0],[6,1],[6,2]]);
-        player.board.placeShip(patrolBoat, [[8,0],[8,1]]);
+        player.board.placeShip(carrier, [["A", 1], ["A", 2], ["A", 3], ["A", 4], ["A", 5]]);
+        player.board.placeShip(battleship, [["B", 1], ["B", 2], ["B", 3], ["B", 4]]);
+        player.board.placeShip(destroyer, [["C", 1], ["C", 2], ["C", 3]]);
+        player.board.placeShip(submarine, [["D", 1], ["D", 2], ["D", 3]]);
+        player.board.placeShip(patrolBoat, [["E", 1], ["E", 2]]);
     }
 
     // 2. switch turns
-    
+
     switchTurns() {
         // switch teams
         this.currentPlayer = this.currentPlayer === this.user ? this.opp : this.user;
