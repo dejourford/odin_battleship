@@ -79,6 +79,8 @@ const renderForm = () => {
 
         // create game
         const game = new GameController(firstPlayer, secondPlayer);
+        game.setupShips(game.user);
+        game.setupShips(game.opp);
         console.log(game)
         renderNames(firstPlayer, secondPlayer)
     })
