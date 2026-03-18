@@ -1,6 +1,6 @@
 import { Gameboard } from "./src/Gameboard.js";
 import { GameController } from "./src/GameController.js";
-import { renderBoard, renderNames } from "./src/UIController.js";
+import { renderBoard, renderNames, renderShips } from "./src/UIController.js";
 
 // define game variable
 let game = null;
@@ -91,13 +91,8 @@ function startGame(player1, player2) {
     game.setupShips(game.user);
     game.setupShips(game.opp);
     renderNames(player1, player2)
+    renderShips(game.currentPlayer.board.ships)
 }
-
-// render form to get player data when start button pressed
-const startButton = document.querySelector(".start-button");
-startButton.addEventListener("click", renderForm)
-
-document.addEventListener("click", handleGlobalClick);
 
 // global click listeners for the document
 function handleGlobalClick(e) {
@@ -115,4 +110,9 @@ function handleGlobalClick(e) {
     }
 }
 
+// event listeners
+const startButton = document.querySelector(".start-button");
+startButton.addEventListener("click", renderForm)
+
+document.addEventListener("click", handleGlobalClick);
 

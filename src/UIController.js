@@ -66,8 +66,8 @@ export function renderBoard(board) {
 }
 
 // fxn to render ships
-export function renderShips(game) {
-    
+export function renderShips(playerShips) {
+    console.log(playerShips);
 }
 
 // fxn to add player names to board
