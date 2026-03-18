@@ -2,6 +2,8 @@ import { Gameboard } from "./src/Gameboard.js";
 import { GameController } from "./src/GameController.js";
 import { renderBoard, renderNames } from "./src/UIController.js";
 
+// define game variable
+let game = null;
 
 // call render board on page load
 renderBoard([]);
@@ -66,7 +68,7 @@ const renderForm = () => {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (playerOneInput.value === "" || playerTwoInput.value === "") return;
-        
+
 
         const formData = new FormData(form)
 
@@ -78,14 +80,18 @@ const renderForm = () => {
         overlay.remove();
 
         // create game
-        const game = new GameController(firstPlayer, secondPlayer);
-        game.setupShips(game.user);
-        game.setupShips(game.opp);
-        console.log(game)
-        renderNames(firstPlayer, secondPlayer)
+        startGame(firstPlayer, secondPlayer)
     })
 
 };
+
+// fxn to start game
+function startGame(player1, player2) {
+    const game = new GameController(player1, player2);
+    game.setupShips(game.user);
+    game.setupShips(game.opp);
+    renderNames(player1, player2)
+}
 
 // render form to get player data when start button pressed
 const startButton = document.querySelector(".start-button");

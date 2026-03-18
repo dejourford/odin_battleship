@@ -65,6 +65,11 @@ export function renderBoard(board) {
     app.append(boardElement);
 }
 
+// fxn to render ships
+export function renderShips(game) {
+    
+}
+
 // fxn to add player names to board
 export function renderNames(fp, sp) {
     // remove prior names 
