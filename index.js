@@ -87,7 +87,7 @@ const renderForm = () => {
 
 // fxn to start game
 function startGame(player1, player2) {
-    const game = new GameController(player1, player2);
+    game = new GameController(player1, player2);
     game.setupShips(game.user);
     game.setupShips(game.opp);
     renderNames(player1, player2)
@@ -95,20 +95,24 @@ function startGame(player1, player2) {
 
 // render form to get player data when start button pressed
 const startButton = document.querySelector(".start-button");
-startButton.addEventListener("click", () => {
-    renderForm();
-})
+startButton.addEventListener("click", renderForm)
+
+document.addEventListener("click", handleGlobalClick);
 
 // global click listeners for the document
-document.addEventListener("click", (e) => {
-
+function handleGlobalClick(e) {
     // modal listeners
     const modalOverlay = document.querySelector(".modal-overlay");
-    const form = document.querySelector("form")
+    
+    if (!modalOverlay) return;
 
+    
     if (e.target.matches(".modal-overlay")) {
-        form.reset();
-        modalOverlay.remove();
+        const form = e.target.querySelector("form");
+        if (form) form.reset();
+        
+        e.target.remove();
     }
-})
+}
+
 
