@@ -118,7 +118,7 @@ export function renderNames(fp, sp) {
 
     const firstPlayerWrapper = document.createElement("section");
 
-    const firstPlayerText = document.createElement("h2");
+    const firstPlayerText = document.createElement("h3");
     firstPlayerText.classList.add("first-player-name")
     firstPlayerText.textContent = `${firstPlayer.name.toUpperCase()}`
 
@@ -136,7 +136,7 @@ export function renderNames(fp, sp) {
 
     const secondPlayerWrapper = document.createElement("section");
 
-    const secondPlayerText = document.createElement("h2");
+    const secondPlayerText = document.createElement("h3");
     secondPlayerText.classList.add("second-player-name")
     secondPlayerText.textContent = `${secondPlayer.name.toUpperCase()}`
 
