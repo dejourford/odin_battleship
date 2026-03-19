@@ -36,6 +36,10 @@ h1 {
     color: rgb(0, 0, 0, 0.3);
 }
 
+.cell:hover {
+    background: lightgray;
+}
+
 .cell.ship {
     background: lightskyblue;
 }
