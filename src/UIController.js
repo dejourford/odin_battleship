@@ -22,7 +22,7 @@ export function renderBoard(board) {
                 cell.classList.add("cell");
 
                 // give data attributes that represent cell coordinates
-                cell.dataset.x = labelCollection[j -1];
+                cell.dataset.x = labelCollection[j - 1];
                 cell.dataset.y = i;
 
                 // visible label
@@ -68,15 +68,30 @@ export function renderBoard(board) {
 // fxn to render ships
 export function renderShips(playerShips) {
     const coordinates = [];
+    const boardCells = document.querySelectorAll(".cell")
+
     console.log(playerShips);
 
     // get ship coordinates from playerShips;
-    for (let i = 0; i < playerShips.length;  i++) {
+    for (let i = 0; i < playerShips.length; i++) {
         console.log(playerShips[i].coordinates)
         for (let j = 0; j < playerShips[i].coordinates.length; j++) {
             console.log(playerShips[i].coordinates[j])
 
-           
+            const [x, y] = playerShips[i].coordinates[j]
+            console.log(x,y)
+            //    loop through each cell in the board dom
+            boardCells.forEach((cell) => {
+                // grab the x (to string) and y (to number) data attributes values
+                if (cell.dataset.x === x && Number(cell.dataset.y) === Number(y)) {
+                    // if values match, then add a .ship class to the cell
+                    cell.classList.add("ship")
+                    console.log("match")
+                }
+                
+            
+            })
+            
         }
     }
     // target board

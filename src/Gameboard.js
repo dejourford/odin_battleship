@@ -1,6 +1,6 @@
 export class Gameboard {
     constructor() {
-        this.size = 10;
+        this.size = 100;
         this.ships = [];
         this.missedAttacks = [];
         this.attacks = [];
