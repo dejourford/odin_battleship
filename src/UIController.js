@@ -22,8 +22,8 @@ export function renderBoard(board) {
                 cell.classList.add("cell");
 
                 // give data attributes that represent cell coordinates
-                cell.dataset.x = i;
-                cell.dataset.y = j;
+                cell.dataset.x = labelCollection[j -1];
+                cell.dataset.y = i;
 
                 // visible label
                 cell.textContent = `${labelCollection[j - 1]}${i}`
@@ -67,7 +67,20 @@ export function renderBoard(board) {
 
 // fxn to render ships
 export function renderShips(playerShips) {
+    const coordinates = [];
     console.log(playerShips);
+
+    // get ship coordinates from playerShips;
+    for (let i = 0; i < playerShips.length;  i++) {
+        console.log(playerShips[i].coordinates)
+        for (let j = 0; j < playerShips[i].coordinates.length; j++) {
+            console.log(playerShips[i].coordinates[j])
+
+           
+        }
+    }
+    // target board
+    // find matching board coordinates with data attribute
 }
 
 // fxn to add player names to board
