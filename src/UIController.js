@@ -83,7 +83,7 @@ export function renderShips(playerShips) {
             //    loop through each cell in the board dom
             boardCells.forEach((cell) => {
                 // grab the x (to string) and y (to number) data attributes values
-                if (cell.dataset.x === x && Number(cell.dataset.y) === Number(y)) {
+                if (cell.dataset.x === x && Number(cell.dataset.y) === y) {
                     // if values match, then add a .ship class to the cell
                     cell.classList.add("ship")
                     console.log("match")
