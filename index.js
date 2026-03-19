@@ -48,7 +48,7 @@ const renderForm = () => {
 
     // create submit button
     const submitButton = document.createElement("button");
-    submitButton.type = "submit";
+    submitButton.type = "button";
     submitButton.classList = "submit-button";
     submitButton.textContent = "Submit";
 
@@ -64,8 +64,14 @@ const renderForm = () => {
     // insert before board
     app.insertBefore(overlay, board);
 
+    // submit button listener
+    submitButton.addEventListener("click", () => {
+        form.requestSubmit();
+    })
+
     // form listener
     form.addEventListener("submit", (e) => {
+        console.log("SUBMIT FIRED");
         e.preventDefault();
         if (playerOneInput.value === "" || playerTwoInput.value === "") return;
 
