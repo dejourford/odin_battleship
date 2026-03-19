@@ -40,6 +40,15 @@ h1 {
     background: lightskyblue;
 }
 
+.ship-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.ship-name {
+    list-style: none;
+}
 /* Start Button */
 .start-button {
     padding: 1rem 2rem;

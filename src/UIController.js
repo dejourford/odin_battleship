@@ -79,7 +79,7 @@ export function renderShips(playerShips) {
             console.log(playerShips[i].coordinates[j])
 
             const [x, y] = playerShips[i].coordinates[j]
-            console.log(x,y)
+            console.log(x, y)
             //    loop through each cell in the board dom
             boardCells.forEach((cell) => {
                 // grab the x (to string) and y (to number) data attributes values
@@ -88,10 +88,10 @@ export function renderShips(playerShips) {
                     cell.classList.add("ship")
                     console.log("match")
                 }
-                
-            
+
+
             })
-            
+
         }
     }
     // target board
@@ -113,9 +113,9 @@ export function renderNames(fp, sp) {
     const board = document.querySelector(".board")
 
     const firstPlayer = fp
-    
+
     const secondPlayer = sp;
-console.log(secondPlayer)
+
     const firstPlayerWrapper = document.createElement("section");
 
     const firstPlayerText = document.createElement("h2");
@@ -123,10 +123,16 @@ console.log(secondPlayer)
     firstPlayerText.textContent = `${firstPlayer.name.toUpperCase()}`
 
     const firstPlayerShipsList = document.createElement("ul");
-    for (const ship of firstPlayer.board.ships) {
-        console.log(ship)
+    firstPlayerShipsList.classList.add("ship-list");
+
+    for (const shipObject of firstPlayer.board.ships) {
+        console.log(shipObject.ship.name)
+        const shipName = document.createElement("li");
+        shipName.classList.add("ship-name");
+        shipName.textContent = shipObject.ship.name + " " + `(${shipObject.ship.length} Length)`;
+        firstPlayerShipsList.append(shipName)
     }
-    
+
 
     const secondPlayerWrapper = document.createElement("section");
 
@@ -135,10 +141,20 @@ console.log(secondPlayer)
     secondPlayerText.textContent = `${secondPlayer.name.toUpperCase()}`
 
     const secondPlayerShipsList = document.createElement("ul");
+    secondPlayerShipsList.classList.add("ship-list")
+
+    for (const shipObject of secondPlayer.board.ships) {
+        console.log(shipObject.ship.name)
+        const shipName = document.createElement("li");
+        shipName.classList.add("ship-name");
+        shipName.textContent = shipObject.ship.name + " " + `(${shipObject.ship.length} Length)`;
+        secondPlayerShipsList.append(shipName)
+    }
 
 
     firstPlayerWrapper.append(firstPlayerText, firstPlayerShipsList)
     secondPlayerWrapper.append(secondPlayerText, secondPlayerShipsList)
     app.insertBefore(firstPlayerWrapper, board)
     app.appendChild(secondPlayerWrapper, secondPlayerText)
+
 }
