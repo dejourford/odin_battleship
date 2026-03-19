@@ -129,7 +129,7 @@ export function renderNames(fp, sp) {
         console.log(shipObject.ship.name)
         const shipName = document.createElement("li");
         shipName.classList.add("ship-name");
-        shipName.textContent = shipObject.ship.name + " " + `(${shipObject.ship.length} Length)`;
+        shipName.textContent = shipObject.ship.name + " " + `(Length: ${shipObject.ship.length})`;
         firstPlayerShipsList.append(shipName)
     }
 
@@ -147,7 +147,7 @@ export function renderNames(fp, sp) {
         console.log(shipObject.ship.name)
         const shipName = document.createElement("li");
         shipName.classList.add("ship-name");
-        shipName.textContent = shipObject.ship.name + " " + `(${shipObject.ship.length} Length)`;
+        shipName.textContent = shipObject.ship.name + " " + `(Length: ${shipObject.ship.length})`;
         secondPlayerShipsList.append(shipName)
     }
 
