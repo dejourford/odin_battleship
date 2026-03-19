@@ -5,13 +5,13 @@ import { Ship } from "../src/Ship";
 // test gameboard stores ships
 test("gameboard stores ships", () => {
     const newBoard = new Gameboard();
-    const ship = new Ship(3);
+    const ship = new Ship("test-ship", 3);
 
-    newBoard.placeShip(ship, [[1, 3], [1, 4], [4, 5]]);
+    newBoard.placeShip(ship, [["A", 3], ["A", 4], ["A", 5]]);
     expect(newBoard.ships).toEqual([
         {
             ship: ship,
-            coordinates: [[1, 3], [1, 4], [4, 5]]
+            coordinates: [["A", 3], ["A", 4], ["A", 5]]
         }
     ])
 })
@@ -19,23 +19,23 @@ test("gameboard stores ships", () => {
 // test gameboard throws an error instead of placing overlapping ships
 test("gameboard throws an error instead of placing overlapping ships", () => {
     const newBoard = new Gameboard();
-    const ship = new Ship(3);
-    const ship2 = new Ship(4);
+    const ship = new Ship("test-ship", 3);
+    const ship2 = new Ship("test-ship", 4);
 
-    newBoard.placeShip(ship, [[1,3], [1,4], [1,5]]);
+    newBoard.placeShip(ship, [["A",3], ["A",4], ["A",5]]);
 
     expect(() => {
-        newBoard.placeShip(ship2, [[1,3], [1,4], [1,5], [1,6]]);
+        newBoard.placeShip(ship2, [["A",3], ["A",4], ["A",5], ["A",6]]);
     }).toThrow("A ship already exists here!");
 });
 
 // test gameboard receives attacks
 test("gameboard receives attacks", () => {
     const newBoard = new Gameboard();
-    const ship = new Ship(3);
+    const ship = new Ship("test-ship", 3);
 
-    newBoard.placeShip(ship, [[1, 3], [1, 4], [1, 5]])
-    newBoard.receiveAttack(1, 3)
+    newBoard.placeShip(ship, [["A", 3], ["A", 4], ["A", 5]])
+    newBoard.receiveAttack("A", 3)
     expect(ship.hits).toBe(1)
 })
 
@@ -43,55 +43,55 @@ test("gameboard receives attacks", () => {
 test("gameboard tracks misses", () => {
     const newBoard = new Gameboard();
 
-    newBoard.receiveAttack(1, 6)
-    expect(newBoard.missedAttacks).toEqual([[1, 6]])
+    newBoard.receiveAttack("A", 6)
+    expect(newBoard.missedAttacks).toEqual([["A", 6]])
 })
 
 // test gameboard to track multiple misses
 test("gameboard tracks misses", () => {
     const newBoard = new Gameboard();
 
-    newBoard.receiveAttack(1, 6)
-    newBoard.receiveAttack(2, 3)
-    newBoard.receiveAttack(3, 1)
-    expect(newBoard.missedAttacks).toEqual([[1, 6], [2, 3], [3, 1]])
+    newBoard.receiveAttack("A", 6)
+    newBoard.receiveAttack("A", 3)
+    newBoard.receiveAttack("A", 1)
+    expect(newBoard.missedAttacks).toEqual([["A", 6], ["A", 3], ["A", 1]])
 })
 
 // test gameboard checks if all ships are sunk
 test("gameboard returns false if not all ships are hit", () => {
     const newBoard = new Gameboard();
-    const ship = new Ship(3);
-    newBoard.placeShip(ship, [[1, 6], [1, 3], [1, 1]])
-    newBoard.receiveAttack(1, 6)
-    newBoard.receiveAttack(1, 3)
-    newBoard.receiveAttack(1, 2)
+    const ship = new Ship("test-ship", 3);
+    newBoard.placeShip(ship, [["A", 6], ["A", 3], ["A", 1]])
+    newBoard.receiveAttack("A", 6)
+    newBoard.receiveAttack("A", 3)
+    newBoard.receiveAttack("A", 2)
     expect(newBoard.allShipsSunk()).toEqual(false)
 })
 
 // test gameboard checks if all ships are sunk
 test("gameboard returns true if all ships are hit", () => {
     const newBoard = new Gameboard();
-    const ship = new Ship(3);
-    newBoard.placeShip(ship, [[1, 6], [1, 3], [1, 2]])
-    newBoard.receiveAttack(1, 6)
-    newBoard.receiveAttack(1, 3)
-    newBoard.receiveAttack(1, 2)
+    const ship = new Ship("test-ship", 3);
+    newBoard.placeShip(ship, [["A", 6], ["A", 3], ["A", 2]])
+    newBoard.receiveAttack("A", 6)
+    newBoard.receiveAttack("A", 3)
+    newBoard.receiveAttack("A", 2)
     expect(newBoard.allShipsSunk()).toEqual(true)
 })
 
 // test gameboard checks for user as winner
 test("gameboard checks for and returns winner", () => {
     const game = new GameController();
-    const ship = new Ship(4);
-    const ship2 = new Ship(2);
-    game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
-    game.cpu.board.placeShip(ship2, [[2,2], [3,3]])
-    game.user.attack(game.cpu.board, 1, 2)
-    game.user.attack(game.cpu.board, 2, 3)
-    game.user.attack(game.cpu.board, 1, 4)
-    game.user.attack(game.cpu.board, 1, 5)
-    game.user.attack(game.cpu.board, 2, 2)
-    game.user.attack(game.cpu.board, 3, 3)
+    const ship = new Ship("test-ship", 4);
+    const ship2 = new Ship("test-ship", 2);
+    game.opp.board.placeShip(ship, [["A",2], ["A",3], ["A",4], ["A",5]])
+    game.opp.board.placeShip(ship2, [["B",2], ["B",3]])
+    game.user.attack(game.opp.board, "A", 2)
+    game.user.attack(game.opp.board, "A", 3)
+    game.user.attack(game.opp.board, "A", 4)
+    game.user.attack(game.opp.board, "A", 5)
+    game.user.attack(game.opp.board, "B", 2)
+    game.user.attack(game.opp.board, "B", 3)
 
     expect(game.checkWinner()).toBe("user")
 }) 
@@ -99,33 +99,33 @@ test("gameboard checks for and returns winner", () => {
 // test gameboard checks for cpu as winner
 test("test gameboard checks for cpu as winner", () => {
     const game = new GameController();
-    const ship = new Ship(4);
-    const ship2 = new Ship(2);
-    game.user.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
-    game.user.board.placeShip(ship2, [[2,2], [3,3]])
-    game.cpu.attack(game.user.board, 1, 2)
-    game.cpu.attack(game.user.board, 2, 3)
-    game.cpu.attack(game.user.board, 1, 4)
-    game.cpu.attack(game.user.board, 1, 5)
-    game.cpu.attack(game.user.board, 2, 2)
-    game.cpu.attack(game.user.board, 3, 3)
+    const ship = new Ship("test-ship", 4);
+    const ship2 = new Ship("test-ship", 2);
+    game.user.board.placeShip(ship, [["A", 2], ["A", 3], ["A", 4], ["A", 5]])
+    game.user.board.placeShip(ship2, [["B", 2], ["B", 3]])
+    game.opp.attack(game.user.board, "A", 2)
+    game.opp.attack(game.user.board, "A", 3)
+    game.opp.attack(game.user.board, "A", 4)
+    game.opp.attack(game.user.board, "A", 5)
+    game.opp.attack(game.user.board, "B", 2)
+    game.opp.attack(game.user.board, "B", 3)
 
-    expect(game.checkWinner()).toBe("cpu")
+    expect(game.checkWinner()).toBe("opp")
 })
 
 // test gameboard checks for user as winner
 test("gameboard checks for user as winner", () => {
     const game = new GameController();
-    const ship = new Ship(4);
-    const ship2 = new Ship(2);
-    game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
-    game.cpu.board.placeShip(ship2, [[2,2], [3,3]])
-    game.user.attack(game.cpu.board, 1, 2)
-    game.user.attack(game.cpu.board, 2, 3)
-    game.user.attack(game.cpu.board, 1, 4)
-    game.user.attack(game.cpu.board, 1, 5)
-    game.user.attack(game.cpu.board, 2, 2)
-    game.user.attack(game.cpu.board, 3, 3)
+    const ship = new Ship("test-ship", 4);
+    const ship2 = new Ship("test-ship", 2);
+    game.opp.board.placeShip(ship, [["A",2], ["A",3], ["A",4], ["A",5]])
+    game.opp.board.placeShip(ship2, [["B",2], ["B",3]])
+    game.user.attack(game.opp.board, "A", 2)
+    game.user.attack(game.opp.board, "A", 3)
+    game.user.attack(game.opp.board, "A", 4)
+    game.user.attack(game.opp.board, "A", 5)
+    game.user.attack(game.opp.board, "B", 2)
+    game.user.attack(game.opp.board, "B", 3)
 
     expect(game.checkWinner()).toBe("user")
 }) 
@@ -133,13 +133,13 @@ test("gameboard checks for user as winner", () => {
 // test gameboard throws an error when a previously successful attack is attempted by the user
 test("gameboard throws an error when a previously successful attack is attempted by the user", () => {
     const game = new GameController();
-    const ship = new Ship(4);
-    game.cpu.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
-    game.user.attack(game.cpu.board, 1, 2)
+    const ship = new Ship("test-ship", 4);
+    game.cpu.board.placeShip(ship, [["A",2], ["A",3], ["A",4], ["A",5]])
+    game.user.attack(game.cpu.board, "A", 2)
     
 
     expect(() => {
-        game.user.attack(game.cpu.board, 1, 2)
+        game.user.attack(game.cpu.board, "A", 2)
         game.cpu.board.receiveAttack()
     }).toThrow("This attack has already been made!")
 })
@@ -147,13 +147,13 @@ test("gameboard throws an error when a previously successful attack is attempted
 // test gameboard throws an error when a previously successful attack is attempted by the cpu
 test("gameboard throws an error when a previously successful attack is attempted by the cpu", () => {
     const game = new GameController();
-    const ship = new Ship(4);
-    game.user.board.placeShip(ship, [[1,2], [2,3], [1,4], [1,5]])
-    game.cpu.attack(game.user.board, 1, 2)
+    const ship = new Ship("test-ship", 4);
+    game.user.board.placeShip(ship, [["A", 2], ["A", 3], ["A", 4], ["A", 5]])
+    game.cpu.attack(game.user.board, "A", 2)
     
 
     expect(() => {
-        game.cpu.attack(game.user.board, 1, 2)
+        game.cpu.attack(game.user.board, "A", 2)
         game.user.board.receiveAttack()
     }).toThrow("This attack has already been made!")
 })
