@@ -96,7 +96,7 @@ function startGame(player1, player2) {
     game = new GameController(player1, player2);
     game.setupShips(game.user);
     game.setupShips(game.opp);
-    renderNames(player1, player2)
+    renderNames(game.user, game.opp)
     renderShips(game.currentPlayer.board.ships)
 }
 

@@ -1,10 +1,11 @@
 // create class for ships
 export class Ship {
 
-    constructor(length) {
+    constructor(name, length) {
         if (length <= 1 || length > 5) {
             throw new Error("Invalid ship length!")
         }
+        this.name = name;
         this.length = length;
         this.hits = 0;
     }

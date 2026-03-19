@@ -4,8 +4,8 @@ import { renderBoard } from "./UIController.js";
 
 export class GameController {
     constructor(firstPlayer, secondPlayer) {
-        this.user = new Player(`"${firstPlayer}"`);
-        this.opp = new Player(`"${secondPlayer}"`);
+        this.user = new Player(`${firstPlayer}`);
+        this.opp = new Player(`${secondPlayer}`);
         this.cpu = new Player("cpu");
         this.currentPlayer = this.user;
     }
@@ -14,11 +14,11 @@ export class GameController {
 
     // 1. setup chips
     setupShips(player) {
-        const carrier = new Ship(5)
-        const battleship = new Ship(4)
-        const destroyer = new Ship(3)
-        const submarine = new Ship(3)
-        const patrolBoat = new Ship(2)
+        const carrier = new Ship("Carrier", 5)
+        const battleship = new Ship("Battleship", 4)
+        const destroyer = new Ship("Destroyer", 3)
+        const submarine = new Ship("Submarine", 3)
+        const patrolBoat = new Ship("Patrol Boat", 2)
 
         console.log(player)
         player.board.placeShip(carrier, [["A", 1], ["A", 2], ["A", 3], ["A", 4], ["A", 5]]);
@@ -41,7 +41,7 @@ export class GameController {
     // 3. check for win condition
     checkWinner() {
         if (this.user.board.allShipsSunk()) {
-            return "cpu";
+            return "opp";
         }
 
 

@@ -113,16 +113,32 @@ export function renderNames(fp, sp) {
     const board = document.querySelector(".board")
 
     const firstPlayer = fp
+    
     const secondPlayer = sp;
+console.log(secondPlayer)
+    const firstPlayerWrapper = document.createElement("section");
 
-    const firstPlayerText = document.createElement("p");
+    const firstPlayerText = document.createElement("h2");
     firstPlayerText.classList.add("first-player-name")
-    firstPlayerText.textContent = `${firstPlayer.toUpperCase()}`
+    firstPlayerText.textContent = `${firstPlayer.name.toUpperCase()}`
 
-    const secondPlayerText = document.createElement("p");
+    const firstPlayerShipsList = document.createElement("ul");
+    for (const ship of firstPlayer.board.ships) {
+        console.log(ship)
+    }
+    
+
+    const secondPlayerWrapper = document.createElement("section");
+
+    const secondPlayerText = document.createElement("h2");
     secondPlayerText.classList.add("second-player-name")
-    secondPlayerText.textContent = `${secondPlayer.toUpperCase()}`
+    secondPlayerText.textContent = `${secondPlayer.name.toUpperCase()}`
 
-    app.insertBefore(firstPlayerText, board)
-    app.appendChild(secondPlayerText)
+    const secondPlayerShipsList = document.createElement("ul");
+
+
+    firstPlayerWrapper.append(firstPlayerText, firstPlayerShipsList)
+    secondPlayerWrapper.append(secondPlayerText, secondPlayerShipsList)
+    app.insertBefore(firstPlayerWrapper, board)
+    app.appendChild(secondPlayerWrapper, secondPlayerText)
 }
