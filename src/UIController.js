@@ -1,67 +1,29 @@
 // function to render board
 export function renderBoard(board) {
-    console.log('board:', board)
-
-    // define target for board
     const app = document.querySelector("#app");
-    const boardElement = document.createElement("section")
+    const boardElement = document.createElement("section");
     boardElement.classList.add("board");
 
-
-    // set innerHTML to empty string
     app.innerHTML = "";
 
-    // if empty array is passed, then render empty board
-    if (board.length === 0) {
-        const labelCollection = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-        for (let i = 1; i < 11; i++) {
+    const labelCollection = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+    const size = board.size || 10;
 
-            for (let j = 1; j < 11; j++) {
-                // build grid of cells
-                const cell = document.createElement("div");
-                cell.classList.add("cell");
+    for (let i = 1; i <= size; i++) {
+        for (let j = 1; j <= size; j++) {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
 
-                // give data attributes that represent cell coordinates
-                cell.dataset.x = labelCollection[j - 1];
-                cell.dataset.y = i;
+            // ✅ ALWAYS use letters for x (important for horizontal logic)
+            cell.dataset.x = labelCollection[j - 1];
+            cell.dataset.y = i;
 
-                // visible label
-                cell.textContent = `${labelCollection[j - 1]}${i}`
+            cell.textContent = `${labelCollection[j - 1]}${i}`;
 
-                boardElement.append(cell);
-
-
-            }
-
+            boardElement.append(cell);
         }
     }
 
-    // for loop for board length
-    if (board.size) {
-        const labelCollection = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-        for (let i = 1; i < board.size + 1; i++) {
-
-            for (let j = 1; j < board.size + 1; j++) {
-                // build grid of cells
-                const cell = document.createElement("div");
-                cell.classList.add("cell");
-
-                // give data attributes that represent cell coordinates
-                cell.dataset.x = i;
-                cell.dataset.y = j;
-
-                // visible label
-                cell.textContent = `${labelCollection[j - 1]}${i}`
-
-                boardElement.append(cell);
-
-
-            }
-
-        }
-    }
-
-    // assembly
     app.append(boardElement);
 }
 
@@ -159,45 +121,150 @@ export function renderNames(fp, sp) {
 
 }
 
-// playerPlaceShips() to get user input
 export function playerPlaceShips(player) {
-    console.log(player, 'will place their ships')
+    let orientation = "vertical";
 
-    // define ships
-    const ships = player.board.ships
-    console.log(ships)
+    const ships = player.board.ships;
 
-    // define curentShip
     let currentShipIndex = 0;
     let currentShip = ships[currentShipIndex];
 
-    // create text in dom to let user know which ship they are placing
+    const app = document.querySelector("#app");
+    const grid = document.querySelector(".board");
+
+    // ✅ placement UI
     const placementText = document.createElement("p");
     placementText.classList.add("placement-text");
-    placementText.innerHTML = `
-  Place <span style="color: crimson;"><strong>${currentShip.ship.name}</strong></span> on the battlefield.
-  <span style="display:block;">Length: ${currentShip.ship.length}</span>
-`;
 
-    const app = document.querySelector("#app");
-    app.after(placementText)
+    function updateText() {
+        placementText.innerHTML = `
+            Place <strong>${currentShip.ship.name}</strong>
+            <span style="display:block;">Length: ${currentShip.ship.length}</span>
+            <span style="display:block;">Orientation: ${orientation}</span>
+            <span style="display:block;">Press R to rotate</span>
+        `;
+    }
 
-    // define grid
-    const grid = document.querySelector(".board")
+    updateText();
+    app.after(placementText); // ✅ FIXED
 
-    grid.addEventListener("click", (e) => {
-        const cell = e.target;
+    // ✅ helper
+    function getShipPositions(x, y, length, orientation) {
+        const positions = [];
 
-        if (!cell.classList.contains("cell")) return;
+        const getNextLetter = (letter, offset) =>
+            String.fromCharCode(letter.charCodeAt(0) + offset);
 
-        console.log("placing:", currentShip)
+        if (orientation === "vertical") {
+            if (y + length - 1 <= 10) {
+                for (let i = 0; i < length; i++) {
+                    positions.push([x, y + i]);
+                }
+            } else if (y - (length - 1) >= 1) {
+                for (let i = 0; i < length; i++) {
+                    positions.push([x, y - i]);
+                }
+            }
+        } else {
+            if (x.charCodeAt(0) + (length - 1) <= "J".charCodeAt(0)) {
+                for (let i = 0; i < length; i++) {
+                    positions.push([getNextLetter(x, i), y]);
+                }
+            } else if (x.charCodeAt(0) - (length - 1) >= "A".charCodeAt(0)) {
+                for (let i = 0; i < length; i++) {
+                    positions.push([getNextLetter(x, -i), y]);
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    // ✅ hover preview
+    grid.addEventListener("mouseover", (e) => {
+        const cell = e.target.closest(".cell");
+        if (!cell) return;
+
+        document.querySelectorAll(".cell.hover").forEach(c =>
+            c.classList.remove("hover")
+        );
 
         const x = cell.dataset.x;
         const y = Number(cell.dataset.y);
 
-        // attempt placement
-    })
+        const positions = getShipPositions(
+            x,
+            y,
+            currentShip.ship.length,
+            orientation
+        );
 
+        positions.forEach(([px, py]) => {
+            const target = document.querySelector(
+                `[data-x="${px}"][data-y="${py}"]`
+            );
+            if (target) target.classList.add("hover");
+        });
+    });
 
+    // ✅ clear hover
+    grid.addEventListener("mouseout", () => {
+        document.querySelectorAll(".cell.hover").forEach(c =>
+            c.classList.remove("hover")
+        );
+    });
 
+    // ✅ click placement
+    grid.addEventListener("click", (e) => {
+        const cell = e.target.closest(".cell");
+        if (!cell) return;
+
+        const x = cell.dataset.x;
+        const y = Number(cell.dataset.y);
+
+        const positions = getShipPositions(
+            x,
+            y,
+            currentShip.ship.length,
+            orientation
+        );
+
+        if (!positions.length) return;
+
+        // 👉 call your game logic
+        const success = player.board.placeShip(positions, currentShip);
+
+        if (!success) return;
+
+        // render ship
+        positions.forEach(([px, py]) => {
+            const target = document.querySelector(
+                `[data-x="${px}"][data-y="${py}"]`
+            );
+            if (target) target.classList.add("ship");
+        });
+
+        // next ship
+        currentShipIndex++;
+
+        if (currentShipIndex < ships.length) {
+            currentShip = ships[currentShipIndex];
+            updateText();
+        } else {
+            placementText.textContent = "All ships placed!";
+            document.removeEventListener("keydown", handleRotate);
+        }
+    });
+
+    // ✅ rotate
+    function handleRotate(e) {
+        if (e.key.toLowerCase() === "r") {
+            orientation =
+                orientation === "vertical" ? "horizontal" : "vertical";
+
+            updateText();
+        }
+    }
+
+    document.addEventListener("keydown", handleRotate);
 }
