@@ -184,7 +184,7 @@ export function playerPlaceShips(player) {
 
     // define grid
     const grid = document.querySelector(".board")
-    
+
     grid.addEventListener("click", (e) => {
         const cell = e.target;
 
@@ -197,7 +197,7 @@ export function playerPlaceShips(player) {
 
         // attempt placement
     })
-    
+
 
 
 }
