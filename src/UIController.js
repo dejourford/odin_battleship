@@ -12,7 +12,7 @@ export function renderBoard(board) {
     app.innerHTML = "";
 
     // if empty array is passed, then render empty board
-    if (board = []) {
+    if (board.length === 0) {
         const labelCollection = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
         for (let i = 1; i < 11; i++) {
 
@@ -74,19 +74,19 @@ export function renderShips(playerShips) {
 
     // get ship coordinates from playerShips;
     for (let i = 0; i < playerShips.length; i++) {
-        console.log(playerShips[i].coordinates)
+        // console.log(playerShips[i].coordinates)
         for (let j = 0; j < playerShips[i].coordinates.length; j++) {
-            console.log(playerShips[i].coordinates[j])
+            // console.log(playerShips[i].coordinates[j])
 
             const [x, y] = playerShips[i].coordinates[j]
-            console.log(x, y)
+            // console.log(x, y)
             //    loop through each cell in the board dom
             boardCells.forEach((cell) => {
                 // grab the x (to string) and y (to number) data attributes values
                 if (cell.dataset.x === x && Number(cell.dataset.y) === y) {
                     // if values match, then add a .ship class to the cell
                     cell.classList.add("ship")
-                    console.log("match")
+                    // console.log("match")
                 }
 
 
@@ -156,5 +156,40 @@ export function renderNames(fp, sp) {
     secondPlayerWrapper.append(secondPlayerText, secondPlayerShipsList)
     app.insertBefore(firstPlayerWrapper, board)
     app.appendChild(secondPlayerWrapper, secondPlayerText)
+
+}
+
+// playerPlaceShips() to get user input
+export function playerPlaceShips(player) {
+    console.log(player, 'will place their ships')
+
+    // define ships
+    const ships = player.board.ships
+    console.log(ships)
+
+    // define curentShip
+    let currentShip;
+    for (let i = 0; i < ships.length; i++) {
+        currentShip = ships[i];
+
+        
+    }
+
+    // variable to track state
+    let userPlacingShips = true;
+
+    // define grid
+    const grid = document.querySelector(".board")
+
+
+    // log user click in cell
+    grid.querySelectorAll(".cell").forEach((cell) => {
+        cell.addEventListener("click", () => {
+            console.log('cell clicked')
+            console.log(currentShip)
+        })
+    })
+    // loop through each ship
+
 
 }
