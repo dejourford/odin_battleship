@@ -168,28 +168,22 @@ export function playerPlaceShips(player) {
     console.log(ships)
 
     // define curentShip
-    let currentShip;
-    for (let i = 0; i < ships.length; i++) {
-        currentShip = ships[i];
+    let currentShipIndex = 0;
+    let currentShip = ships[currentShipIndex];
 
-        
-    }
-
-    // variable to track state
-    let userPlacingShips = true;
+    // create text in dom to let user know which ship they are placing
+    
 
     // define grid
     const grid = document.querySelector(".board")
-
-
-    // log user click in cell
     grid.querySelectorAll(".cell").forEach((cell) => {
         cell.addEventListener("click", () => {
-            console.log('cell clicked')
-            console.log(currentShip)
+            console.log('placing:', currentShip);
+            
+            // attempt placement
         })
     })
-    // loop through each ship
+    
 
 
 }
