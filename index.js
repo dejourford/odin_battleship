@@ -1,6 +1,6 @@
 import { Gameboard } from "./src/Gameboard.js";
 import { GameController } from "./src/GameController.js";
-import { renderBoard, renderNames, renderShips } from "./src/UIController.js";
+import { playerPlaceShips, renderBoard, renderNames, renderShips } from "./src/UIController.js";
 
 // define game variable
 let game = null;
@@ -97,7 +97,8 @@ function startGame(player1, player2) {
     game.setupShips(game.user);
     game.setupShips(game.opp);
     renderNames(game.user, game.opp)
-    renderShips(game.currentPlayer.board.ships)
+    playerPlaceShips(game.currentPlayer)
+    // renderShips(game.currentPlayer.board.ships)
 }
 
 // global click listeners for the document
