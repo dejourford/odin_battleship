@@ -172,16 +172,30 @@ export function playerPlaceShips(player) {
     let currentShip = ships[currentShipIndex];
 
     // create text in dom to let user know which ship they are placing
-    
+    const placementText = document.createElement("p");
+    placementText.classList.add("placement-text");
+    placementText.innerHTML = `
+  Place <span style="color: crimson;"><strong>${currentShip.ship.name}</strong></span> on the battlefield.
+  <span style="display:block;">Length: ${currentShip.ship.length}</span>
+`;
+
+    const app = document.querySelector("#app");
+    app.after(placementText)
 
     // define grid
     const grid = document.querySelector(".board")
-    grid.querySelectorAll(".cell").forEach((cell) => {
-        cell.addEventListener("click", () => {
-            console.log('placing:', currentShip);
-            
-            // attempt placement
-        })
+    
+    grid.addEventListener("click", (e) => {
+        const cell = e.target;
+
+        if (!cell.classList.contains("cell")) return;
+
+        console.log("placing:", currentShip)
+
+        const x = cell.dataset.x;
+        const y = Number(cell.dataset.y);
+
+        // attempt placement
     })
     
 

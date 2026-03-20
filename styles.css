@@ -53,6 +53,14 @@ h1 {
 .ship-name {
     list-style: none;
 }
+
+.placement-text {
+    text-align: center;
+    padding: 0.5rem 0rem;
+    font-size: 1.5rem;
+}
+
+
 /* Start Button */
 .start-button {
     padding: 1rem 2rem;
