@@ -14,7 +14,7 @@ export function renderBoard(board) {
             const cell = document.createElement("div");
             cell.classList.add("cell");
 
-            // ✅ ALWAYS use letters for x (important for horizontal logic)
+            // use letters for x
             cell.dataset.x = labelCollection[j - 1];
             cell.dataset.y = i;
 
@@ -132,7 +132,7 @@ export function playerPlaceShips(player) {
     const app = document.querySelector("#app");
     const grid = document.querySelector(".board");
 
-    // ✅ placement UI
+    // placement UI
     const placementText = document.createElement("p");
     placementText.classList.add("placement-text");
 
@@ -146,9 +146,9 @@ export function playerPlaceShips(player) {
     }
 
     updateText();
-    app.after(placementText); // ✅ FIXED
+    app.after(placementText); 
 
-    // ✅ helper
+    // helper
     function getShipPositions(x, y, length, orientation) {
         const positions = [];
 
@@ -180,7 +180,7 @@ export function playerPlaceShips(player) {
         return positions;
     }
 
-    // ✅ hover preview
+    // hover preview
     grid.addEventListener("mouseover", (e) => {
         const cell = e.target.closest(".cell");
         if (!cell) return;
@@ -207,14 +207,14 @@ export function playerPlaceShips(player) {
         });
     });
 
-    // ✅ clear hover
+    // clear hover
     grid.addEventListener("mouseout", () => {
         document.querySelectorAll(".cell.hover").forEach(c =>
             c.classList.remove("hover")
         );
     });
 
-    // ✅ click placement
+    // click placement
     grid.addEventListener("click", (e) => {
         const cell = e.target.closest(".cell");
         if (!cell) return;
@@ -231,7 +231,7 @@ export function playerPlaceShips(player) {
 
         if (!positions.length) return;
 
-        // 👉 call your game logic
+        // call game logic
         const success = player.board.placeShip(positions, currentShip);
 
         if (!success) return;
@@ -256,7 +256,7 @@ export function playerPlaceShips(player) {
         }
     });
 
-    // ✅ rotate
+    // rotate
     function handleRotate(e) {
         if (e.key.toLowerCase() === "r") {
             orientation =
