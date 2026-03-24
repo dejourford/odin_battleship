@@ -1,10 +1,13 @@
 // function to render board
 export function renderBoard(board) {
     const app = document.querySelector("#app");
+
+    // remove existing board FIRST
+    const existingBoard = document.querySelector(".board");
+    if (existingBoard) existingBoard.remove();
+
     const boardElement = document.createElement("section");
     boardElement.classList.add("board");
-
-    app.innerHTML = "";
 
     const labelCollection = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
     const size = board.size || 10;
@@ -14,7 +17,6 @@ export function renderBoard(board) {
             const cell = document.createElement("div");
             cell.classList.add("cell");
 
-            // use letters for x
             cell.dataset.x = labelCollection[j - 1];
             cell.dataset.y = i;
 
@@ -27,42 +29,25 @@ export function renderBoard(board) {
     app.append(boardElement);
 }
 
-// fxn to render ships
+// render ships (UNCHANGED)
 export function renderShips(playerShips) {
-    const coordinates = [];
-    const boardCells = document.querySelectorAll(".cell")
+    const boardCells = document.querySelectorAll(".cell");
 
-    console.log(playerShips);
-
-    // get ship coordinates from playerShips;
     for (let i = 0; i < playerShips.length; i++) {
-        // console.log(playerShips[i].coordinates)
         for (let j = 0; j < playerShips[i].coordinates.length; j++) {
-            // console.log(playerShips[i].coordinates[j])
+            const [x, y] = playerShips[i].coordinates[j];
 
-            const [x, y] = playerShips[i].coordinates[j]
-            // console.log(x, y)
-            //    loop through each cell in the board dom
             boardCells.forEach((cell) => {
-                // grab the x (to string) and y (to number) data attributes values
                 if (cell.dataset.x === x && Number(cell.dataset.y) === y) {
-                    // if values match, then add a .ship class to the cell
-                    cell.classList.add("ship")
-                    // console.log("match")
+                    cell.classList.add("ship");
                 }
-
-
-            })
-
+            });
         }
     }
-    // target board
-    // find matching board coordinates with data attribute
 }
 
-// fxn to add player names to board
+// render player names (UNCHANGED)
 export function renderNames(fp, sp) {
-    // remove prior names 
     const firstPlayerName = document.querySelector(".first-player-name");
     const secondPlayerName = document.querySelector(".second-player-name");
 
@@ -71,74 +56,84 @@ export function renderNames(fp, sp) {
         secondPlayerName.remove();
     }
 
+    const firstPlayerShipWrapper = document.querySelector(".first-player-ship-wrapper");
+    const secondPlayerShipWrapper = document.querySelector(".second-player-ship-wrapper");
+
+    if (firstPlayerShipWrapper && secondPlayerShipWrapper) {
+        firstPlayerShipWrapper.remove();
+        secondPlayerShipWrapper.remove();
+    }
+
+
     const app = document.querySelector("#app");
-    const board = document.querySelector(".board")
-
-    const firstPlayer = fp
-
-    const secondPlayer = sp;
+    const board = document.querySelector(".board");
 
     const firstPlayerWrapper = document.createElement("section");
+    firstPlayerWrapper.classList.add("first-player-ship-wrapper");
 
     const firstPlayerText = document.createElement("h3");
-    firstPlayerText.classList.add("first-player-name")
-    firstPlayerText.textContent = `${firstPlayer.name.toUpperCase()}`
+    firstPlayerText.classList.add("first-player-name");
+    firstPlayerText.textContent = `${fp.name.toUpperCase()}`;
 
     const firstPlayerShipsList = document.createElement("ul");
     firstPlayerShipsList.classList.add("ship-list");
 
-    for (const shipObject of firstPlayer.board.ships) {
-        console.log(shipObject.ship.name)
+    for (const shipObject of fp.shipsToPlace) {
         const shipName = document.createElement("li");
         shipName.classList.add("ship-name");
-        shipName.textContent = shipObject.ship.name + " " + `(Length: ${shipObject.ship.length})`;
-        firstPlayerShipsList.append(shipName)
-    }
+        shipName.textContent =
+            shipObject.name + ` (Length: ${shipObject.length})`;
 
+        firstPlayerShipsList.append(shipName);
+    }
 
     const secondPlayerWrapper = document.createElement("section");
+    secondPlayerWrapper.classList.add("second-player-ship-wrapper");
 
     const secondPlayerText = document.createElement("h3");
-    secondPlayerText.classList.add("second-player-name")
-    secondPlayerText.textContent = `${secondPlayer.name.toUpperCase()}`
+    secondPlayerText.classList.add("second-player-name");
+    secondPlayerText.textContent = `${sp.name.toUpperCase()}`;
 
     const secondPlayerShipsList = document.createElement("ul");
-    secondPlayerShipsList.classList.add("ship-list")
+    secondPlayerShipsList.classList.add("ship-list");
 
-    for (const shipObject of secondPlayer.board.ships) {
-        console.log(shipObject.ship.name)
+    for (const shipObject of sp.shipsToPlace) {
         const shipName = document.createElement("li");
         shipName.classList.add("ship-name");
-        shipName.textContent = shipObject.ship.name + " " + `(Length: ${shipObject.ship.length})`;
-        secondPlayerShipsList.append(shipName)
+        shipName.textContent =
+            shipObject.name + ` (Length: ${shipObject.length})`;
+
+        secondPlayerShipsList.append(shipName);
     }
 
+    firstPlayerWrapper.append(firstPlayerText, firstPlayerShipsList);
+    secondPlayerWrapper.append(secondPlayerText, secondPlayerShipsList);
 
-    firstPlayerWrapper.append(firstPlayerText, firstPlayerShipsList)
-    secondPlayerWrapper.append(secondPlayerText, secondPlayerShipsList)
-    app.insertBefore(firstPlayerWrapper, board)
-    app.appendChild(secondPlayerWrapper, secondPlayerText)
-
+    app.insertBefore(firstPlayerWrapper, board);
+    app.appendChild(secondPlayerWrapper, secondPlayerText);
 }
 
-export function playerPlaceShips(player) {
+// function to place ships
+export function playerPlaceShips(player, opponent, onComplete) {
     let orientation = "vertical";
 
     const ships = player.shipsToPlace;
-
     let currentShipIndex = 0;
     let currentShip = ships[currentShipIndex];
 
     const app = document.querySelector("#app");
     const grid = document.querySelector(".board");
 
-    // placement UI
+    // remove old placement text
+    const existingText = document.querySelector(".placement-text");
+    if (existingText) existingText.remove();
+
     const placementText = document.createElement("p");
     placementText.classList.add("placement-text");
 
     function updateText() {
         placementText.innerHTML = `
-            Place <strong>${currentShip.name}</strong>
+            <strong>${player.name.toUpperCase()}</strong>, place your <strong>${currentShip.name}</strong>
             <span style="display:block;">Length: ${currentShip.length}</span>
             <span style="display:block;">Orientation: ${orientation}</span>
             <span style="display:block;">Press R to rotate</span>
@@ -148,7 +143,6 @@ export function playerPlaceShips(player) {
     updateText();
     app.after(placementText);
 
-    // helper
     function getShipPositions(x, y, length, orientation) {
         const positions = [];
 
@@ -160,19 +154,11 @@ export function playerPlaceShips(player) {
                 for (let i = 0; i < length; i++) {
                     positions.push([x, y + i]);
                 }
-            } else if (y - (length - 1) >= 1) {
-                for (let i = 0; i < length; i++) {
-                    positions.push([x, y - i]);
-                }
             }
         } else {
             if (x.charCodeAt(0) + (length - 1) <= "J".charCodeAt(0)) {
                 for (let i = 0; i < length; i++) {
                     positions.push([getNextLetter(x, i), y]);
-                }
-            } else if (x.charCodeAt(0) - (length - 1) >= "A".charCodeAt(0)) {
-                for (let i = 0; i < length; i++) {
-                    positions.push([getNextLetter(x, -i), y]);
                 }
             }
         }
@@ -203,15 +189,15 @@ export function playerPlaceShips(player) {
             const target = document.querySelector(
                 `[data-x="${px}"][data-y="${py}"]`
             );
+
             if (target) target.classList.add("hover");
 
-            if (target.classList.contains("ship")) {
+            if (target && target.classList.contains("ship")) {
                 target.classList.add("error");
             }
         });
     });
 
-    // clear hover
     grid.addEventListener("mouseout", () => {
         document.querySelectorAll(".cell.hover").forEach(c =>
             c.classList.remove("hover")
@@ -219,11 +205,7 @@ export function playerPlaceShips(player) {
     });
 
     // click placement
-    let allShipsPlaced = false;
-
     function handleClick(e) {
-        if (allShipsPlaced) return;
-
         const cell = e.target.closest(".cell");
         if (!cell) return;
 
@@ -236,17 +218,15 @@ export function playerPlaceShips(player) {
             currentShip.length,
             orientation
         );
-        console.log(positions)
+
         if (!positions.length) return;
 
-
         try {
-            // call game logic
             const success = player.board.placeShip(currentShip, positions);
-            console.log('success:', success)
             if (!success) return;
 
-            // render ship
+            
+
             positions.forEach(([px, py]) => {
                 const target = document.querySelector(
                     `[data-x="${px}"][data-y="${py}"]`
@@ -254,7 +234,6 @@ export function playerPlaceShips(player) {
                 if (target) target.classList.add("ship");
             });
 
-            // next ship
             currentShipIndex++;
 
             if (currentShipIndex < ships.length) {
@@ -262,26 +241,23 @@ export function playerPlaceShips(player) {
                 updateText();
             } else {
                 placementText.textContent = "All ships placed!";
+
+                grid.removeEventListener("click", handleClick);
                 document.removeEventListener("keydown", handleRotate);
-
-                allShipsPlaced = true;
-
-                grid.removeEventListener("click", handleClick)
-                // grid.style.pointerEvents = "none"
 
                 player.allShipsPlaced = true;
 
-                return;
+                
+                if (onComplete) onComplete();
             }
-        }
-        catch (error) {
+
+        } catch (error) {
             alert(error.message);
         }
     }
 
     grid.addEventListener("click", handleClick);
 
-    // rotate
     function handleRotate(e) {
         if (e.key.toLowerCase() === "r") {
             orientation =
@@ -292,5 +268,4 @@ export function playerPlaceShips(player) {
     }
 
     document.addEventListener("keydown", handleRotate);
-
 }

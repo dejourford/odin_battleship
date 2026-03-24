@@ -1,4 +1,3 @@
-import { Gameboard } from "./src/Gameboard.js";
 import { GameController } from "./src/GameController.js";
 import { playerPlaceShips, renderBoard, renderNames, renderShips } from "./src/UIController.js";
 
@@ -6,9 +5,11 @@ import { playerPlaceShips, renderBoard, renderNames, renderShips } from "./src/U
 let game = null;
 
 // call render board on page load
-renderBoard([]);
+renderBoard({ size: 10 });
 
-// create function to render form
+/* =========================
+   CREATE FORM 
+========================= */
 const renderForm = () => {
     const app = document.querySelector("#app");
     const board = document.querySelector(".board");
@@ -24,7 +25,7 @@ const renderForm = () => {
     // create form
     const form = document.createElement("form");
 
-    // create player 1 group
+    // player 1 group
     const playerOneGroup = document.createElement("div");
     playerOneGroup.classList.add("player-group");
 
@@ -32,94 +33,166 @@ const renderForm = () => {
     playerOnelabel.textContent = "Player Name";
 
     const playerOneInput = document.createElement("input");
-    playerOneInput.name = "player-one"
+    playerOneInput.name = "player-one";
     playerOneInput.placeholder = "Player Name";
 
-    // create player 2 group
+    // player 2 group
     const playerTwoGroup = document.createElement("div");
     playerTwoGroup.classList.add("player-group");
 
     const playerTwolabel = document.createElement("label");
-    playerTwolabel.textContent = "Player Name (or enter 'cpu' to play the cpu)";
+    playerTwolabel.textContent =
+        "Player Name (or enter 'cpu' to play the cpu)";
 
     const playerTwoInput = document.createElement("input");
-    playerTwoInput.name = "player-two"
-    playerTwoInput.placeholder = "Player Name (or enter 'cpu' to play the cpu)";
+    playerTwoInput.name = "player-two";
+    playerTwoInput.placeholder =
+        "Player Name (or enter 'cpu' to play the cpu)";
 
-    // create submit button
+    // submit button
     const submitButton = document.createElement("button");
     submitButton.type = "button";
     submitButton.classList = "submit-button";
     submitButton.textContent = "Submit";
 
-    // form assembly
+    // assemble form
     playerOneGroup.append(playerOnelabel, playerOneInput);
     playerTwoGroup.append(playerTwolabel, playerTwoInput);
     form.append(playerOneGroup, playerTwoGroup, submitButton);
 
-    // assembly
+    // assemble modal
     modal.append(form);
     overlay.append(modal);
 
-    // insert before board
+    // insert into DOM
     app.insertBefore(overlay, board);
 
-    // submit button listener
+    // trigger submit
     submitButton.addEventListener("click", () => {
         form.requestSubmit();
-    })
+    });
 
-    // form listener
+    // handle submit
     form.addEventListener("submit", (e) => {
-        console.log("SUBMIT FIRED");
         e.preventDefault();
-        if (playerOneInput.value === "" || playerTwoInput.value === "") return;
 
+        if (!playerOneInput.value || !playerTwoInput.value) return;
 
-        const formData = new FormData(form)
-
-        const firstPlayer = formData.get("player-one").toLowerCase();
-        const secondPlayer = formData.get("player-two").toLowerCase();
-        console.log(firstPlayer, secondPlayer)
+        const firstPlayer = playerOneInput.value.toLowerCase();
+        const secondPlayer = playerTwoInput.value.toLowerCase();
 
         form.reset();
         overlay.remove();
 
-        // create game
-        startGame(firstPlayer, secondPlayer)
-    })
-
+        startGame(firstPlayer, secondPlayer);
+    });
 };
 
-// fxn to start game
+/* =========================
+   START GAME
+========================= */
 function startGame(player1, player2) {
     game = new GameController(player1, player2);
-    game.setupShips(game.user);
-    game.setupShips(game.opp);
-    renderNames(game.user, game.opp)
-    playerPlaceShips(game.currentPlayer)
-    // renderShips(game.currentPlayer.board.ships)
+console.log(game.user)
+    renderNames(game.user, game.opp);
+
+    handlePhase(); 
 }
 
-// global click listeners for the document
+/* =========================
+   PHASE ROUTER
+========================= */
+function handlePhase() {
+    if (game.phase === "placement-p1" || game.phase === "placement-p2") {
+        startPlacementPhase();
+    } else if (game.phase === "battle") {
+        startBattlePhase();
+    }
+}
+
+/* =========================
+   PLACEMENT PHASE
+========================= */
+function startPlacementPhase() {
+    playerPlaceShips(game.currentPlayer,
+        game.currentPlayer === game.user ? game.opp : game.user,
+         () => {
+        game.nextPhase();
+
+        renderBoard(game.currentPlayer.board);
+        renderShips(game.currentPlayer.board.ships);
+        renderNames(game.user, game.opp);
+
+        handlePhase();
+    });
+}
+
+/* =========================
+   BATTLE PHASE
+========================= */
+function startBattlePhase() {
+    console.log("Battle phase started");
+
+    const grid = document.querySelector(".board");
+
+    function handleAttack(e) {
+        const cell = e.target.closest(".cell");
+        if (!cell) return;
+
+        const x = cell.dataset.x;
+        const y = Number(cell.dataset.y);
+
+        const enemy =
+            game.currentPlayer === game.user ? game.opp : game.user;
+
+        try {
+            const result = enemy.board.receiveAttack(x, y);
+
+            // add hit/miss class
+            cell.classList.add(result);
+
+            const winner = game.checkWinner();
+            if (winner) {
+                alert(`${winner} wins!`);
+                grid.removeEventListener("click", handleAttack);
+                return;
+            }
+
+            game.nextPhase();
+
+            renderBoard(enemy.board);
+            renderShips(enemy.board.ships);
+            renderNames(game.user, game.opp);
+
+            handlePhase();
+        } catch (err) {
+            alert(err.message);
+        }
+    }
+
+    grid.addEventListener("click", handleAttack);
+}
+
+/* =========================
+   GLOBAL CLICK HANDLER 
+========================= */
 function handleGlobalClick(e) {
-    // modal listeners
     const modalOverlay = document.querySelector(".modal-overlay");
-    
+
     if (!modalOverlay) return;
 
-    
     if (e.target.matches(".modal-overlay")) {
         const form = e.target.querySelector("form");
         if (form) form.reset();
-        
+
         e.target.remove();
     }
 }
 
-// event listeners
+/* =========================
+   EVENT LISTENERS
+========================= */
 const startButton = document.querySelector(".start-button");
-startButton.addEventListener("click", renderForm)
+startButton.addEventListener("click", renderForm);
 
 document.addEventListener("click", handleGlobalClick);
-
