@@ -26,6 +26,8 @@ export class Gameboard {
         ship,
         coordinates
     });
+
+    return true;
 }
     // 2. NEEDS TO RECEIVE ATTACKS
     receiveAttack(x, y) {

@@ -146,7 +146,7 @@ export function playerPlaceShips(player) {
     }
 
     updateText();
-    app.after(placementText); 
+    app.after(placementText);
 
     // helper
     function getShipPositions(x, y, length, orientation) {
@@ -185,8 +185,8 @@ export function playerPlaceShips(player) {
         const cell = e.target.closest(".cell");
         if (!cell) return;
 
-        document.querySelectorAll(".cell.hover").forEach(c =>
-            c.classList.remove("hover")
+        document.querySelectorAll(".cell").forEach(c =>
+            c.classList.remove("hover", "error")
         );
 
         const x = cell.dataset.x;
@@ -204,6 +204,10 @@ export function playerPlaceShips(player) {
                 `[data-x="${px}"][data-y="${py}"]`
             );
             if (target) target.classList.add("hover");
+
+            if (target.classList.contains("ship")) {
+                target.classList.add("error");
+            }
         });
     });
 
@@ -228,31 +232,37 @@ export function playerPlaceShips(player) {
             currentShip.ship.length,
             orientation
         );
-
+        console.log(positions)
         if (!positions.length) return;
 
-        // call game logic
-        const success = player.board.placeShip(positions, currentShip);
 
-        if (!success) return;
+        try {
+            // call game logic
+            const success = player.board.placeShip(currentShip, positions);
+            console.log('success:', success)
+            if (!success) return;
 
-        // render ship
-        positions.forEach(([px, py]) => {
-            const target = document.querySelector(
-                `[data-x="${px}"][data-y="${py}"]`
-            );
-            if (target) target.classList.add("ship");
-        });
+            // render ship
+            positions.forEach(([px, py]) => {
+                const target = document.querySelector(
+                    `[data-x="${px}"][data-y="${py}"]`
+                );
+                if (target) target.classList.add("ship");
+            });
 
-        // next ship
-        currentShipIndex++;
+            // next ship
+            currentShipIndex++;
 
-        if (currentShipIndex < ships.length) {
-            currentShip = ships[currentShipIndex];
-            updateText();
-        } else {
-            placementText.textContent = "All ships placed!";
-            document.removeEventListener("keydown", handleRotate);
+            if (currentShipIndex < ships.length) {
+                currentShip = ships[currentShipIndex];
+                updateText();
+            } else {
+                placementText.textContent = "All ships placed!";
+                document.removeEventListener("keydown", handleRotate);
+            }
+        }
+        catch (error) {
+            alert(error.message);
         }
     });
 
