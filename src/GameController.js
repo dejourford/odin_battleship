@@ -1,6 +1,6 @@
 import { Player } from "./Player.js";
 import { Ship } from "./Ship.js";
-import { renderBoard } from "./UIController.js";
+import { renderBoard, playerPlaceShips } from "./UIController.js";
 
 export class GameController {
     constructor(firstPlayer, secondPlayer) {
@@ -8,24 +8,22 @@ export class GameController {
         this.opp = new Player(`${secondPlayer}`);
         this.cpu = new Player("cpu");
         this.currentPlayer = this.user;
+
+        this.setupShips(this.user);
+        this.setupShips(this.opp);
     }
 
 
 
     // 1. setup chips
     setupShips(player) {
-        const carrier = new Ship("Carrier", 5)
-        const battleship = new Ship("Battleship", 4)
-        const destroyer = new Ship("Destroyer", 3)
-        const submarine = new Ship("Submarine", 3)
-        const patrolBoat = new Ship("Patrol Boat", 2)
-
-        console.log(player)
-        player.board.placeShip(carrier, [["A", 1], ["A", 2], ["A", 3], ["A", 4], ["A", 5]]);
-        player.board.placeShip(battleship, [["B", 1], ["B", 2], ["B", 3], ["B", 4]]);
-        player.board.placeShip(destroyer, [["C", 1], ["C", 2], ["C", 3]]);
-        player.board.placeShip(submarine, [["D", 1], ["D", 2], ["D", 3]]);
-        player.board.placeShip(patrolBoat, [["E", 1], ["E", 2]]);
+        player.shipsToPlace = [
+            new Ship("Carrier", 5),
+            new Ship("Battleship", 4),
+            new Ship("Destroyer", 3),
+            new Ship("Submarine", 3),
+            new Ship("Patrol Boat", 2),
+        ]
     }
 
     // 2. switch turns
@@ -36,6 +34,27 @@ export class GameController {
 
         // render current player board
         renderBoard(this.currentPlayer.board);
+    }
+
+    startPlacementPhase(player) {
+        player.allShipsPlaced = false;
+        
+        renderBoard(player.board);
+
+        playerPlaceShips(player);
+
+        this.waitForPlacement(player);
+    }
+
+    waitForPlacement(player) {
+        const observer = setInterval(() => {
+            if (player.allShipsPlaced) {
+                clearInterval(observer);
+                this.switchTurns();
+
+                this.startPlacementPhase(this.currentPlayer);
+            }
+        }, 50);
     }
 
     // 3. check for win condition

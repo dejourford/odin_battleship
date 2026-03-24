@@ -11,6 +11,7 @@ export class Player {
         this.type = name === "cpu" ? "cpu" : "user"
         this.name = name;
         this.board = new Gameboard();
+        this.allShipsPlaced = false;
     }
 
     attack(enemyBoard, x, y) {

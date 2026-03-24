@@ -124,7 +124,7 @@ export function renderNames(fp, sp) {
 export function playerPlaceShips(player) {
     let orientation = "vertical";
 
-    const ships = player.board.ships;
+    const ships = player.shipsToPlace;
 
     let currentShipIndex = 0;
     let currentShip = ships[currentShipIndex];
@@ -138,8 +138,8 @@ export function playerPlaceShips(player) {
 
     function updateText() {
         placementText.innerHTML = `
-            Place <strong>${currentShip.ship.name}</strong>
-            <span style="display:block;">Length: ${currentShip.ship.length}</span>
+            Place <strong>${currentShip.name}</strong>
+            <span style="display:block;">Length: ${currentShip.length}</span>
             <span style="display:block;">Orientation: ${orientation}</span>
             <span style="display:block;">Press R to rotate</span>
         `;
@@ -195,7 +195,7 @@ export function playerPlaceShips(player) {
         const positions = getShipPositions(
             x,
             y,
-            currentShip.ship.length,
+            currentShip.length,
             orientation
         );
 
@@ -219,7 +219,11 @@ export function playerPlaceShips(player) {
     });
 
     // click placement
-    grid.addEventListener("click", (e) => {
+    let allShipsPlaced = false;
+
+    function handleClick(e) {
+        if (allShipsPlaced) return;
+
         const cell = e.target.closest(".cell");
         if (!cell) return;
 
@@ -229,7 +233,7 @@ export function playerPlaceShips(player) {
         const positions = getShipPositions(
             x,
             y,
-            currentShip.ship.length,
+            currentShip.length,
             orientation
         );
         console.log(positions)
@@ -259,12 +263,23 @@ export function playerPlaceShips(player) {
             } else {
                 placementText.textContent = "All ships placed!";
                 document.removeEventListener("keydown", handleRotate);
+
+                allShipsPlaced = true;
+
+                grid.removeEventListener("click", handleClick)
+                // grid.style.pointerEvents = "none"
+
+                player.allShipsPlaced = true;
+
+                return;
             }
         }
         catch (error) {
             alert(error.message);
         }
-    });
+    }
+
+    grid.addEventListener("click", handleClick);
 
     // rotate
     function handleRotate(e) {
@@ -277,4 +292,5 @@ export function playerPlaceShips(player) {
     }
 
     document.addEventListener("keydown", handleRotate);
+
 }
