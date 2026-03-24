@@ -40,6 +40,10 @@ h1 {
     background: lightgreen;
 }
 
+.cell.error {
+    background: crimson !important;
+}
+
 .cell.ship {
     background: lightskyblue;
 }
