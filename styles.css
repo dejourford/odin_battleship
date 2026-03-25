@@ -48,6 +48,10 @@ h1 {
     background: lightskyblue;
 }
 
+.cell.miss {
+    background: crimson;
+}
+
 .ship-list {
     display: flex;
     flex-direction: column;

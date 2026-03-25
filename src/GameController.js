@@ -34,7 +34,7 @@ export class GameController {
             this.phase = "placement-p2";
         } else if (this.phase === "placement-p2") {
             this.phase = "battle";
-            this.currentPlayer = this.user;
+            this.currentPlayer = this.opp;
         } else if (this.phase === "battle") {
             this.switchTurns();
         }
@@ -44,5 +44,9 @@ export class GameController {
         if (this.user.board.allShipsSunk()) return "opp";
         if (this.opp.board.allShipsSunk()) return "user";
         return null;
+    }
+
+    getEnemyPlayer() {
+        return this.currentPlayer === this.user ? this.opp : this.user;
     }
 }

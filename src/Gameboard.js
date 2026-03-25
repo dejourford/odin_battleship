@@ -33,8 +33,12 @@ export class Gameboard {
     receiveAttack(x, y) {
         // check if [x,y] is in board.attacks. if so throw error
 
-        if (this.attacks.some(([ax, ay]) => ax === x && ay === y)) {
-            throw new Error("This attack has already been made!")
+        const alreadyAttacked = 
+        this.attacks.some(([ax, ay]) => ax === x && ay === y) ||
+        this.missedAttacks.some(([mx, my])=> mx === x && my === y);
+
+        if (alreadyAttacked) {
+            throw new Error("This attack has already been made!");
         }
 
 

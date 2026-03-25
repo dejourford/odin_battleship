@@ -1,9 +1,9 @@
 import { GameController } from "./src/GameController.js";
-import { playerPlaceShips, renderBoard, renderNames, renderShips } from "./src/UIController.js";
+import { playerPlaceShips, renderBoard, renderMisses, renderNames, renderShips } from "./src/UIController.js";
 
 // define game variable
 let game = null;
-
+let battleListenerAttached = false;
 // call render board on page load
 renderBoard({ size: 10 });
 
@@ -93,10 +93,10 @@ const renderForm = () => {
 ========================= */
 function startGame(player1, player2) {
     game = new GameController(player1, player2);
-console.log(game.user)
+    console.log(game.user)
     renderNames(game.user, game.opp);
 
-    handlePhase(); 
+    handlePhase();
 }
 
 /* =========================
@@ -116,15 +116,15 @@ function handlePhase() {
 function startPlacementPhase() {
     playerPlaceShips(game.currentPlayer,
         game.currentPlayer === game.user ? game.opp : game.user,
-         () => {
-        game.nextPhase();
+        () => {
+            game.nextPhase();
 
-        renderBoard(game.currentPlayer.board);
-        renderShips(game.currentPlayer.board.ships);
-        renderNames(game.user, game.opp);
+            renderBoard(game.currentPlayer.board);
+            renderShips(game.currentPlayer.board.ships);
+            renderNames(game.user, game.opp);
 
-        handlePhase();
-    });
+            handlePhase();
+        });
 }
 
 /* =========================
@@ -133,7 +133,21 @@ function startPlacementPhase() {
 function startBattlePhase() {
     console.log("Battle phase started");
 
+    function updateText() {
+        const placementText = document.querySelector(".placement-text")
+
+        placementText.innerHTML = `
+        ${game.currentPlayer.name.toUpperCase()} place your attack.    
+        `;
+    }
+
+    // remove old listeners
     const grid = document.querySelector(".board");
+
+    grid.replaceWith(grid.cloneNode(true));
+    const newGrid = document.querySelector(".board");
+
+    newGrid.addEventListener("click", handleAttack);
 
     function handleAttack(e) {
         const cell = e.target.closest(".cell");
@@ -142,14 +156,19 @@ function startBattlePhase() {
         const x = cell.dataset.x;
         const y = Number(cell.dataset.y);
 
-        const enemy =
-            game.currentPlayer === game.user ? game.opp : game.user;
-
+        const enemy = game.getEnemyPlayer();
+        console.log('enemy:', enemy)
+        console.log('game:', game)
         try {
             const result = enemy.board.receiveAttack(x, y);
 
-            // add hit/miss class
-            cell.classList.add(result);
+
+            cell.classList.add("result");
+
+            renderBoard(enemy.board);
+            renderShips(enemy.board.ships);
+            renderMisses(enemy.board);
+
 
             const winner = game.checkWinner();
             if (winner) {
@@ -158,21 +177,28 @@ function startBattlePhase() {
                 return;
             }
 
-            game.nextPhase();
+            setTimeout(() => {
+                game.nextPhase();
 
-            renderBoard(enemy.board);
-            renderShips(enemy.board.ships);
-            renderNames(game.user, game.opp);
+                const nextEnemy = game.getEnemyPlayer();
 
-            handlePhase();
+                renderBoard(nextEnemy.board);
+                renderShips(nextEnemy.board.ships);
+                renderMisses(nextEnemy.board);
+
+                renderNames(game.user, game.opp);
+                updateText();
+                handlePhase();
+            }, 500);
+
         } catch (err) {
             alert(err.message);
         }
+
     }
 
     grid.addEventListener("click", handleAttack);
 }
-
 /* =========================
    GLOBAL CLICK HANDLER 
 ========================= */

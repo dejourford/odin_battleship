@@ -29,7 +29,7 @@ export function renderBoard(board) {
     app.append(boardElement);
 }
 
-// render ships (UNCHANGED)
+// render ships
 export function renderShips(playerShips) {
     const boardCells = document.querySelectorAll(".cell");
 
@@ -46,7 +46,25 @@ export function renderShips(playerShips) {
     }
 }
 
-// render player names (UNCHANGED)
+// function to renderMisses
+export function renderMisses(playerBoard) {
+    console.log('board:', playerBoard)
+
+    playerBoard.missedAttacks.forEach(([x, y]) => {
+        const target = document.querySelector(
+            `[data-x="${x}"][data-y="${y}"]`
+        );
+
+        if (target) {
+            console.log("miss marked")
+            target.classList.add("miss");
+        }
+    });
+
+
+}
+
+// render player names 
 export function renderNames(fp, sp) {
     const firstPlayerName = document.querySelector(".first-player-name");
     const secondPlayerName = document.querySelector(".second-player-name");
@@ -225,7 +243,7 @@ export function playerPlaceShips(player, opponent, onComplete) {
             const success = player.board.placeShip(currentShip, positions);
             if (!success) return;
 
-            
+
 
             positions.forEach(([px, py]) => {
                 const target = document.querySelector(
@@ -247,13 +265,15 @@ export function playerPlaceShips(player, opponent, onComplete) {
 
                 player.allShipsPlaced = true;
 
-                
+
                 if (onComplete) onComplete();
             }
 
         } catch (error) {
             alert(error.message);
         }
+
+        renderNames(player, opponent)
     }
 
     grid.addEventListener("click", handleClick);
@@ -269,3 +289,4 @@ export function playerPlaceShips(player, opponent, onComplete) {
 
     document.addEventListener("keydown", handleRotate);
 }
+
