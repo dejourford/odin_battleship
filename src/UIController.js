@@ -280,7 +280,6 @@ export function playerPlaceShips(player, opponent, onComplete) {
             alert(error.message);
         }
 
-        renderNames(player, opponent)
     }
 
     grid.addEventListener("click", handleClick);
