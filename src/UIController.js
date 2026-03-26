@@ -26,7 +26,15 @@ export function renderBoard(board) {
         }
     }
 
-    app.append(boardElement);
+
+    const secondPlayerWrapper = document.querySelector(".second-player-ship-wrapper");
+
+    if (secondPlayerWrapper) {
+        app.insertBefore(boardElement, secondPlayerWrapper)
+    } else {
+        app.append(boardElement);
+    }
+    
 }
 
 // render ships
