@@ -191,7 +191,7 @@ function startBattlePhase() {
                 renderNames(game.user, game.opp);
                 updateText();
                 handlePhase();
-            }, 500);
+            }, 1500);
 
         } catch (err) {
             alert(err.message);
