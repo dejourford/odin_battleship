@@ -272,8 +272,7 @@ export function playerPlaceShips(player, opponent, onComplete) {
                 document.removeEventListener("keydown", handleRotate);
 
                 player.allShipsPlaced = true;
-
-
+                
                 if (onComplete) onComplete();
             }
 
@@ -296,5 +295,12 @@ export function playerPlaceShips(player, opponent, onComplete) {
     }
 
     document.addEventListener("keydown", handleRotate);
+}
+
+export function toggleStartButton() {
+    const startButton = document.querySelector(".start-button");
+    if (!startButton) return;
+
+    startButton.classList.toggle("hidden");
 }
 

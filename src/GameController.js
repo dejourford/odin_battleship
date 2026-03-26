@@ -1,5 +1,6 @@
 import { Player } from "./Player.js";
 import { Ship } from "./Ship.js";
+import { toggleStartButton } from "./UIController.js";
 
 export class GameController {
     constructor(firstPlayer, secondPlayer) {
@@ -34,6 +35,7 @@ export class GameController {
             this.phase = "placement-p2";
         } else if (this.phase === "placement-p2") {
             this.phase = "battle";
+            toggleStartButton()
             this.currentPlayer = this.opp;
         } else if (this.phase === "battle") {
             this.switchTurns();

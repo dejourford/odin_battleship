@@ -85,6 +85,10 @@ h1 {
     color: white;
 }
 
+.start-button.hidden {
+    display: none;
+}
+
 /* modal */
 .modal-overlay {
   position: fixed;

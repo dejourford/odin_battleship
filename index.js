@@ -88,6 +88,14 @@ const renderForm = () => {
     });
 };
 
+function updateText() {
+    const placementText = document.querySelector(".placement-text")
+
+    placementText.innerHTML = `
+        ${game.currentPlayer.name.toUpperCase()} place your attack.    
+        `;
+}
+
 /* =========================
    START GAME
 ========================= */
@@ -119,27 +127,21 @@ function startPlacementPhase() {
         () => {
             game.nextPhase();
 
-            renderBoard(game.currentPlayer.board);
-            renderShips(game.currentPlayer.board.ships);
+            const enemy = game.getEnemyPlayer();
+            renderBoard(enemy.board); 
             renderNames(game.user, game.opp);
-
+            updateText();
             handlePhase();
         });
 }
+
+
 
 /* =========================
    BATTLE PHASE
 ========================= */
 function startBattlePhase() {
     console.log("Battle phase started");
-
-    function updateText() {
-        const placementText = document.querySelector(".placement-text")
-
-        placementText.innerHTML = `
-        ${game.currentPlayer.name.toUpperCase()} place your attack.    
-        `;
-    }
 
     // remove old listeners
     const grid = document.querySelector(".board");
