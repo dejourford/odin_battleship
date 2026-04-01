@@ -128,7 +128,7 @@ function startPlacementPhase() {
             game.nextPhase();
 
             const enemy = game.getEnemyPlayer();
-            renderBoard(enemy.board); 
+            renderBoard(enemy.board);
             renderNames(game.user, game.opp);
             updateText();
             handlePhase();

@@ -19,7 +19,7 @@ h1 {
 /* board */
 .board {
     border: 1px solid black;
-    width: fit-content; 
+    width: fit-content;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     margin: 0 auto;
@@ -91,26 +91,26 @@ h1 {
 
 /* modal */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 .modal {
-  background: white;
-  padding: 2em;
-  border-radius: 0.5em;
-  min-width: 20rem;
+    background: white;
+    padding: 2em;
+    border-radius: 0.5em;
+    min-width: 20rem;
 }
 
 .player-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-bottom: 1em;
 }
 
 .submit-button {
