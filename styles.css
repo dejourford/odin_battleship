@@ -54,6 +54,7 @@ h1 {
 
 .cell.hit {
     background: black;
+    border: 1px solid white;
 }
 
 .ship-list {
