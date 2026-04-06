@@ -1,5 +1,5 @@
 import { GameController } from "./src/GameController.js";
-import { playerPlaceShips, renderBoard, renderMisses, renderNames, renderShips } from "./src/UIController.js";
+import { playerPlaceShips, renderBoard, renderHits, renderMisses, renderNames, renderShips } from "./src/UIController.js";
 
 // define game variable
 let game = null;
@@ -155,22 +155,21 @@ function startBattlePhase() {
         const cell = e.target.closest(".cell");
         if (!cell) return;
 
-        const x = cell.dataset.x;
+        const x = String(cell.dataset.x);
         const y = Number(cell.dataset.y);
 
         const enemy = game.getEnemyPlayer();
-        console.log('enemy:', enemy)
-        console.log('game:', game)
+
         try {
             const result = enemy.board.receiveAttack(x, y);
 
 
-            cell.classList.add("result");
+            cell.classList.add(`${result}`);
 
             renderBoard(enemy.board);
-            renderShips(enemy.board.ships);
+            // renderShips(enemy.board.ships);
             renderMisses(enemy.board);
-
+            renderHits(enemy.board);
 
             const winner = game.checkWinner();
             if (winner) {
@@ -185,8 +184,9 @@ function startBattlePhase() {
                 const nextEnemy = game.getEnemyPlayer();
 
                 renderBoard(nextEnemy.board);
-                renderShips(nextEnemy.board.ships);
+                // renderShips(nextEnemy.board.ships);
                 renderMisses(nextEnemy.board);
+                renderHits(nextEnemy.board);
 
                 renderNames(game.user, game.opp);
                 updateText();

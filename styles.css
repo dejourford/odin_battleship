@@ -52,6 +52,10 @@ h1 {
     background: crimson;
 }
 
+.cell.hit {
+    background: black;
+}
+
 .ship-list {
     display: flex;
     flex-direction: column;

@@ -49,6 +49,9 @@ export class Gameboard {
 
                 const [cx, cy] = coord;
 
+console.log(typeof cx, cx, "|", typeof x, x);
+console.log(typeof cy, cy, "|", typeof y, y);
+
                 if (cx === x && cy === y) {
                     entry.ship.hit();
                     this.attacks.push([x, y])

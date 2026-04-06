@@ -72,6 +72,25 @@ export function renderMisses(playerBoard) {
 
 }
 
+// function to renderHits
+export function renderHits(playerBoard) {
+    console.log('board:', playerBoard)
+
+    playerBoard.attacks.forEach(([x, y]) => {
+        const target = document.querySelector(
+            `[data-x="${x}"][data-y="${y}"]`
+        );
+
+        if (target) {
+            console.log("hit marked")
+            target.classList.add("hit");
+        }
+    });
+
+
+}
+
+
 // render player names 
 export function renderNames(fp, sp) {
     const firstPlayerName = document.querySelector(".first-player-name");
