@@ -51,4 +51,8 @@ export class GameController {
     getEnemyPlayer() {
         return this.currentPlayer === this.user ? this.opp : this.user;
     }
+
+    isCpuTurn() {
+        return this.currentPlayer.type === "cpu";
+    }
 }

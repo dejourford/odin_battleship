@@ -143,6 +143,10 @@ function startPlacementPhase() {
 function startBattlePhase() {
     console.log("Battle phase started");
 
+    if (game.isCpuTurn()) {
+        console.log("cpu turn");
+    }
+
     // remove old listeners
     const grid = document.querySelector(".board");
 
@@ -180,8 +184,11 @@ function startBattlePhase() {
             setTimeout(() => {
                 game.nextPhase();
 
-                const nextEnemy = game.getEnemyPlayer();
+                if (game.isCpuTurn()) {
+                    console.log("cpu turn");
+                }
 
+                const nextEnemy = game.getEnemyPlayer();
                 renderBoard(nextEnemy.board);
                 renderMisses(nextEnemy.board);
                 renderHits(nextEnemy.board);
