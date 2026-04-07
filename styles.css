@@ -57,6 +57,13 @@ h1 {
     border: 1px solid white;
 }
 
+.cell.hit::after {
+    content: "X";
+    color: white;
+    position: absolute;
+    font-size: 2rem;
+}
+
 .ship-list {
     display: flex;
     flex-direction: column;
