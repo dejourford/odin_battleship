@@ -152,6 +152,7 @@ function startBattlePhase() {
     newGrid.addEventListener("click", handleAttack);
 
     function handleAttack(e) {
+
         const cell = e.target.closest(".cell");
         if (!cell) return;
 
@@ -167,14 +168,12 @@ function startBattlePhase() {
             cell.classList.add(`${result}`);
 
             renderBoard(enemy.board);
-            // renderShips(enemy.board.ships);
             renderMisses(enemy.board);
             renderHits(enemy.board);
 
-            const winner = game.checkWinner();
-            if (winner) {
-                alert(`${winner} wins!`);
-                grid.removeEventListener("click", handleAttack);
+            if (game.checkWinner()) {
+                alert(`${game.checkWinner()} wins!`);
+                newGrid.style.pointerEvents = "none";
                 return;
             }
 
@@ -184,7 +183,6 @@ function startBattlePhase() {
                 const nextEnemy = game.getEnemyPlayer();
 
                 renderBoard(nextEnemy.board);
-                // renderShips(nextEnemy.board.ships);
                 renderMisses(nextEnemy.board);
                 renderHits(nextEnemy.board);
 
@@ -192,14 +190,13 @@ function startBattlePhase() {
                 updateText();
                 handlePhase();
             }, 1500);
-
-        } catch (err) {
+        }
+        catch (err) {
             alert(err.message);
         }
 
     }
 
-    grid.addEventListener("click", handleAttack);
 }
 /* =========================
    GLOBAL CLICK HANDLER 
