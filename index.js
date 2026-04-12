@@ -94,6 +94,8 @@ function updateText() {
     placementText.innerHTML = `
         ${game.currentPlayer.name.toUpperCase()} place your attack.    
         `;
+
+        console.log(game.currentPlayer);
 }
 
 /* =========================
@@ -143,10 +145,6 @@ function startPlacementPhase() {
 function startBattlePhase() {
     console.log("Battle phase started");
 
-    if (game.isCpuTurn()) {
-        console.log("cpu turn");
-    }
-
     // remove old listeners
     const grid = document.querySelector(".board");
 
@@ -155,7 +153,13 @@ function startBattlePhase() {
 
     newGrid.addEventListener("click", handleAttack);
 
+    if (game.isCpuTurn()) {
+        console.log("cpu turn");
+        runCpuTurn();
+    }
+
     function handleAttack(e) {
+        if (game.isCpuTurn()) return; 
 
         const cell = e.target.closest(".cell");
         if (!cell) return;
@@ -163,21 +167,23 @@ function startBattlePhase() {
         const x = String(cell.dataset.x);
         const y = Number(cell.dataset.y);
 
-        const enemy = game.getEnemyPlayer();
+        processAttack(x, y);
+    }
+
+    function processAttack(x, y) {
+        const attacker = game.currentPlayer;
+        const defender = game.getEnemyPlayer();
 
         try {
-            const result = enemy.board.receiveAttack(x, y);
+            const result = defender.board.receiveAttack(x, y);
 
-
-            cell.classList.add(`${result}`);
-
-            renderBoard(enemy.board);
-            renderMisses(enemy.board);
-            renderHits(enemy.board);
+            renderBoard(defender.board);
+            renderMisses(defender.board);
+            renderHits(defender.board);
 
             if (game.checkWinner()) {
                 alert(`${game.checkWinner()} wins!`);
-                newGrid.style.pointerEvents = "none";
+                document.querySelector(".board").style.pointerEvents = "none";
                 return;
             }
 
@@ -185,25 +191,51 @@ function startBattlePhase() {
                 game.nextPhase();
 
                 if (game.isCpuTurn()) {
-                    console.log("cpu turn");
+                    runCpuTurn();
+                    return;
                 }
 
-                const nextEnemy = game.getEnemyPlayer();
-                renderBoard(nextEnemy.board);
-                renderMisses(nextEnemy.board);
-                renderHits(nextEnemy.board);
+                const nextDefender = game.getEnemyPlayer();
+
+                renderBoard(nextDefender.board);
+                renderMisses(nextDefender.board);
+                renderHits(nextDefender.board);
 
                 renderNames(game.user, game.opp);
                 updateText();
                 handlePhase();
-            }, 1500);
-        }
-        catch (err) {
+            }, 2000);
+        } catch (err) {
             alert(err.message);
         }
-
     }
 
+    function runCpuTurn() {
+        console.log("CPU TURN");
+
+        const enemy = game.getEnemyPlayer();
+
+        let x, y;
+        let valid = false;
+
+        const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+        while (!valid) {
+            x = letters[Math.floor(Math.random() * 10)];
+            y = Math.floor(Math.random() * 10) + 1;
+
+            const alreadyUsed =
+                enemy.board.attacks.some(([ax, ay]) => ax === x && ay === y) ||
+                enemy.board.missedAttacks.some(([mx, my]) => mx === x && my === y);
+
+            if (!alreadyUsed) valid = true;
+        }
+
+        setTimeout(() => {
+            processAttack(x, y);
+            updateText();
+        }, 2000);
+    }
 }
 /* =========================
    GLOBAL CLICK HANDLER 
