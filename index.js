@@ -95,7 +95,7 @@ function updateText() {
         ${game.currentPlayer.name.toUpperCase()} place your attack.    
         `;
 
-        console.log(game.currentPlayer);
+    console.log(game.currentPlayer);
 }
 
 /* =========================
@@ -124,7 +124,13 @@ function handlePhase() {
    PLACEMENT PHASE
 ========================= */
 function startPlacementPhase() {
-    playerPlaceShips(game.currentPlayer,
+    if (game.currentPlayer.type === "cpu") {
+        runCpuPlacement();
+        return;
+    }
+
+    playerPlaceShips(
+        game.currentPlayer,
         game.currentPlayer === game.user ? game.opp : game.user,
         () => {
             game.nextPhase();
@@ -134,8 +140,48 @@ function startPlacementPhase() {
             renderNames(game.user, game.opp);
             updateText();
             handlePhase();
-        });
+        }
+    );
 }
+
+function runCpuPlacement() {
+    console.log("CPU placing ships...");
+
+    const board = game.currentPlayer.board;
+
+    const shipLengths = [5, 4, 3, 3, 2];
+    const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+    shipLengths.forEach(length => {
+        let placed = false;
+
+        while (!placed) {
+            const x = letters[Math.floor(Math.random() * 10)];
+            const y = Math.floor(Math.random() * 10) + 1;
+            const isHorizontal = Math.random() < 0.5;
+
+            try {
+                board.placeShip(x, y, length, isHorizontal);
+                placed = true;
+            } catch {
+                // try again if invalid placement
+            }
+        }
+    });
+
+    setTimeout(() => {
+        const enemy = game.getEnemyPlayer();
+        renderBoard(enemy.board); // 👈 shows PLAYER board
+
+        game.nextPhase();
+
+        renderNames(game.user, game.opp);
+        updateText();
+        handlePhase();
+    }, 800);
+}
+
+
 
 
 
@@ -159,7 +205,7 @@ function startBattlePhase() {
     }
 
     function handleAttack(e) {
-        if (game.isCpuTurn()) return; 
+        if (game.isCpuTurn()) return;
 
         const cell = e.target.closest(".cell");
         if (!cell) return;
