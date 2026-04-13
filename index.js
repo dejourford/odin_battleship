@@ -147,12 +147,13 @@ function startPlacementPhase() {
 function runCpuPlacement() {
     console.log("CPU placing ships...");
 
-    const board = game.currentPlayer.board;
+    const player = game.currentPlayer;
+    const ships = player.shipsToPlace;
+    const board = player.board;
 
-    const shipLengths = [5, 4, 3, 3, 2];
-    const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+    const letters = ["A","B","C","D","E","F","G","H","I","J"];
 
-    shipLengths.forEach(length => {
+    ships.forEach((ship) => {
         let placed = false;
 
         while (!placed) {
@@ -160,25 +161,41 @@ function runCpuPlacement() {
             const y = Math.floor(Math.random() * 10) + 1;
             const isHorizontal = Math.random() < 0.5;
 
-            try {
-                board.placeShip(x, y, length, isHorizontal);
-                placed = true;
-            } catch {
-                // try again if invalid placement
+            const positions = [];
+
+            if (isHorizontal) {
+                for (let i = 0; i < ship.length; i++) {
+                    const newX = String.fromCharCode(x.charCodeAt(0) + i);
+                    if (newX > "J") break;
+                    positions.push([newX, y]);
+                }
+            } else {
+                for (let i = 0; i < ship.length; i++) {
+                    const newY = y + i;
+                    if (newY > 10) break;
+                    positions.push([x, newY]);
+                }
             }
+
+            if (positions.length !== ship.length) continue;
+
+            try {
+                const success = board.placeShip(ship, positions);
+                if (success) placed = true;
+            } catch {}
         }
     });
 
     setTimeout(() => {
         const enemy = game.getEnemyPlayer();
-        renderBoard(enemy.board); // 👈 shows PLAYER board
+        renderBoard(enemy.board);
 
         game.nextPhase();
 
         renderNames(game.user, game.opp);
         updateText();
         handlePhase();
-    }, 800);
+    }, 2000);
 }
 
 
